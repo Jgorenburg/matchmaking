@@ -1,47 +1,30 @@
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.Queue
-class Player(champions: Vector[Champion]):
-  val matchHistory: Queue[Match]
+class Player(val champions: Vector[Champion]):
   val memory: HashMap[Champion, Record] =
     champions.foldRight(new HashMap())((champ, map) =>
       map += (champ -> Record())
     )
-  // val champChoice: Champion = chooseChampion()
-
   def getWinPercent(champ: Champion): Float =
     return memory(champ).getWinPercent()
 
-  def recordMatch(game: Match) =
-    matchHistory += game
-    val blueChampion = game.blueSide(1)
-    val redChampion = game.redSide(1)
-    if (game.winner == Side.Blueside)
-      memory(blueChampion).wonGame()
-      memory(redChampion).lostGame()
-    else
-      memory(redChampion).wonGame()
-      memory(blueChampion).lostGame()
+  def betterRecord(champ1: Champion, champ2: Champion): Champion =
+    if getWinPercent(champ1) >= getWinPercent(champ2) then champ1 else champ2
 
   def chooseChampion(oppChoice: Option[Champion]): Champion =
     def champFilter(curChamp: Champion): Boolean =
-      if (!memory.contains(curChamp)) return false
       oppChoice match
         case Some(champ) =>
-          return champ == curChamp
-        case _ => return true
-    val b: Champion =
-      memory.foldRight(new Champion())((newChoice, curChamp) => newChoice(0))
-    return b
+          champ == curChamp
+        case _ => true
+    champions
+      .filter(champ => champFilter(champ))
+      .foldRight(champions(1))((curChoice, champ) =>
+        betterRecord(curChoice, champ)
+      )
 
-class Record:
-  var wins = 0
-  var games = 0
-  def updateRecord(won: Boolean) =
-    games += 1
-    if (won) wins += 1
-  def wonGame() = updateRecord(true)
-  def lostGame() = updateRecord(false)
-  def getWinPercent(): Float =
-    if (games == 0)
-      return 0
-    return wins / games
+  def chooseBlueChampion(): Champion = chooseChampion(None)
+  def chooseRedChampion(champ: Champion): Champion = chooseChampion(Some(champ))
+
+  def updateRecord(champ: Champion, win: Boolean) =
+    memory(champ).updateRecord(win);

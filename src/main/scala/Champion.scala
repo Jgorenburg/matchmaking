@@ -1,1 +1,1 @@
-case class Champion(name: String = "", skill: Int = 0)
+case class Champion(name: String, skill: Int = 0)
