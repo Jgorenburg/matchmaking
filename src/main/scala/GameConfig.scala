@@ -1,17 +1,17 @@
 import scala.io.Source
+import java.io.File
 
 class GameConfig(numPlayers: Int, numChamps: Int):
-  val ListOfChamps: Vector[Champion] = GameConfig.makeListOfChamps(numChamps)
+  val f = new File(getClass.getClassLoader.getResource("fishies.txt").getPath)
+  val ListOfChamps: Vector[Champion] = makeListOfChamps(numChamps)
   var ListOfPlayers: Vector[Player] =
     (1 to numPlayers).toVector.map(i => Player(ListOfChamps))
 
-object GameConfig:
-  val filename = "../../Resources/Fishies.txt"
-  val bufferedSource = Source.fromFile(filename)
-
   def makeListOfChamps(numChamps: Int) =
     val listOfFishies = {
-      val src = Source.fromFile(filename)
+      val src = Source.fromFile(
+        new File(getClass.getClassLoader.getResource("fishies.txt").getPath)
+      )
       val lines = src.getLines.take(numChamps).toList
       src.close
       lines

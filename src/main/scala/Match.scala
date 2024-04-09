@@ -10,7 +10,7 @@ class Match(blueTeam: Player, redTeam: Player) {
     if blueChamp.skill > redChamp.skill then Side.Blueside else Side.Redside
 
   def updateRecords(blueChamp: Champion, redChamp: Champion, winner: Side) =
-    blueTeam.updateRecord(blueChamp, winner == Side.Blueside)
-    redTeam.updateRecord(redChamp, winner == Side.Redside)
+    blueTeam.updateRecord(blueChamp, redChamp, winner == Side.Blueside)
+    redTeam.updateRecord(redChamp, blueChamp, winner == Side.Redside)
 
 }

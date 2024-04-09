@@ -26,5 +26,6 @@ class Player(val champions: Vector[Champion]):
   def chooseBlueChampion(): Champion = chooseChampion(None)
   def chooseRedChampion(champ: Champion): Champion = chooseChampion(Some(champ))
 
-  def updateRecord(champ: Champion, win: Boolean) =
-    memory(champ).updateRecord(win);
+  def updateRecord(myChamp: Champion, oppChamp: Champion, win: Boolean) =
+    memory(myChamp).updateRecord(win)
+    memory(oppChamp).updateRecord(!win)
