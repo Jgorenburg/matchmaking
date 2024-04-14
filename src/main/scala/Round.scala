@@ -1,6 +1,6 @@
 import scala.util.Random
 class Round(roundNum: Int, config: GameConfig) {
-  val history = runRound()
+  val history: RoundHistory = runRound()
 
   def runRound(): RoundHistory =
     config.ListOfPlayers = Random.shuffle(config.ListOfPlayers)
@@ -9,9 +9,8 @@ class Round(roundNum: Int, config: GameConfig) {
         return matches
       }
       val game: Match =
-        Match(config.ListOfPlayers(pos), config.ListOfPlayers(pos + 1))
+        Match(pos, pos + 1, config)
       matches.addMatch(game.history)
-      return runMatches(pos + 2, matches)
-    return runMatches(0, RoundHistory(roundNum))
-
+      runMatches(pos + 2, matches)
+    runMatches(0, RoundHistory(roundNum))
 }

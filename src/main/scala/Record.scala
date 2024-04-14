@@ -8,5 +8,5 @@ class Record:
   def lostGame() = updateRecord(false)
   def getWinPercent(): Float =
     if (games == 0)
-      return 0
+      return 0.1
     return wins / games

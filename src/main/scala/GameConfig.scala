@@ -16,3 +16,5 @@ class GameConfig(numPlayers: Int, numChamps: Int):
       lines
     }
     listOfFishies.zipWithIndex.map(tup => Champion(tup._1, tup._2)).toVector
+
+  def getPlayer(pos: Int): Player = ListOfPlayers(pos)

@@ -1,5 +1,5 @@
-class Tournament(numPlayers: Int, numRounds: Int) {
-  val config = GameConfig(numPlayers, 10)
+class Tournament(numPlayers: Int, numChamps: Int, numRounds: Int) {
+  val config = GameConfig(numPlayers, numChamps)
   val history = runTournament()
   def runTournament(): TournamentHistory =
     def runRounds(roundNum: Int, rounds: TournamentHistory): TournamentHistory =

@@ -1,5 +1,6 @@
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.Queue
+import scala.util.Random
 class Player(val champions: Vector[Champion]):
   val memory: HashMap[Champion, Record] =
     champions.foldRight(new HashMap())((champ, map) =>
@@ -9,17 +10,22 @@ class Player(val champions: Vector[Champion]):
     return memory(champ).getWinPercent()
 
   def betterRecord(champ1: Champion, champ2: Champion): Champion =
-    if getWinPercent(champ1) >= getWinPercent(champ2) then champ1 else champ2
+    val firstWinPercent = getWinPercent(champ1)
+    val secondWinPercent = getWinPercent(champ2)
+    if firstWinPercent > secondWinPercent then champ1
+    else if firstWinPercent < secondWinPercent then champ2
+    else if Random.nextBoolean() then champ1
+    else champ2
 
   def chooseChampion(oppChoice: Option[Champion]): Champion =
     def champFilter(curChamp: Champion): Boolean =
       oppChoice match
         case Some(champ) =>
-          champ == curChamp
+          champ != curChamp
         case _ => true
     champions
       .filter(champ => champFilter(champ))
-      .foldRight(champions(1))((curChoice, champ) =>
+      .foldRight(champions(0))((curChoice, champ) =>
         betterRecord(curChoice, champ)
       )
 

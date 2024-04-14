@@ -21,22 +21,11 @@ class MySuite extends munit.FunSuite {
     assertEquals(config.ListOfPlayers(0).champions(0), champ)
   }
 
-  test("Match.decideWinner test") {
-    val testMatch = Match(null, null)
-    val champ1 = Champion("Reticulated Corydoras", 0)
-    val champ2 = Champion("Malawi golden cichlid", 1)
-    assertEquals(testMatch.decideWinner(champ1, champ2), Side.Redside)
-  }
-
-  test("Match.updateRecords test") {
+  test("basic match test") {
     val config = GameConfig(2, 2)
     val testMatch =
-      Match(config.ListOfPlayers(0), config.ListOfPlayers(1))
-    testMatch.updateRecords(
-      config.ListOfChamps(0),
-      config.ListOfChamps(1),
-      Side.Redside
-    )
+      Match(0, 1, config)
+
     assertEquals(
       config.ListOfPlayers(0).getWinPercent(config.ListOfChamps(0)),
       0.0f
@@ -54,5 +43,21 @@ class MySuite extends munit.FunSuite {
       1.0f
     )
 
+  }
+
+  test("player learning test") {
+    val config = GameConfig(3, 2)
+    val firstMatch = Match(0, 1, config)
+    val secondMatch = Match(0, 2, config)
+
+    assertEquals(secondMatch.history.winner, Side.Blueside)
+  }
+
+  test("simple round test") {
+    val config = GameConfig(4, 2)
+    val round = Round(0, config)
+
+    assertEquals(round.history.getRoundNum(), 0)
+    assertEquals(round.history.getMatches().length, 2)
   }
 }
