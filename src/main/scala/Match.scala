@@ -2,7 +2,8 @@ class Match(bluePlayer: Int, redPlayer: Int, config: GameConfig) {
   val history = runMatch()
 
   def runMatch(): MatchHistory =
-    val blueChamp: Champion = config.getPlayer(bluePlayer).chooseChampion(None)
+    val blueChamp: Champion =
+      config.getPlayer(bluePlayer).chooseChampion(None)
     val redChamp: Champion =
       config.getPlayer(redPlayer).chooseChampion(Some(blueChamp))
     val winner: Side = decideWinner(blueChamp, redChamp)
