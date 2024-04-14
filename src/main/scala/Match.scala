@@ -1,4 +1,6 @@
 class Match(blueTeam: Player, redTeam: Player) {
+  val history = runMatch()
+
   def runMatch(): MatchHistory =
     val blueChamp: Champion = blueTeam.chooseChampion(None)
     val redChamp: Champion = redTeam.chooseChampion(Some(blueChamp))

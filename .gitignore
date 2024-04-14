@@ -4,6 +4,7 @@
 # sbt specific
 dist/*
 target/
+worksheets/
 lib_managed/
 src_managed/
 project/boot/

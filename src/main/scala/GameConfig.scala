@@ -2,7 +2,6 @@ import scala.io.Source
 import java.io.File
 
 class GameConfig(numPlayers: Int, numChamps: Int):
-  val f = new File(getClass.getClassLoader.getResource("fishies.txt").getPath)
   val ListOfChamps: Vector[Champion] = makeListOfChamps(numChamps)
   var ListOfPlayers: Vector[Player] =
     (1 to numPlayers).toVector.map(i => Player(ListOfChamps))
