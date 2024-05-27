@@ -1,4 +1,5 @@
 // For more information on writing tests, see
+import scala.util.Random
 // https://scalameta.org/munit/docs/getting-started.html
 
 class MySuite extends munit.FunSuite {
@@ -60,4 +61,38 @@ class MySuite extends munit.FunSuite {
     assertEquals(round.history.getRoundNum(), 0)
     assertEquals(round.history.getMatches().length, 2)
   }
+
+  test("win ratios test") {
+    val config = GameConfig(3, 2)
+    val dummyMatch = Match(0, 1, config)
+    val blue = Champion("nine", 9)
+    val red = Champion("one", 1)
+    val totalMatches = 1000f
+
+    def returnblueside(): Side = Side.Blueside
+
+    def decideWinner(blueChamp: Champion, redChamp: Champion): Int =
+      if blueChamp.skill > Random.nextInt(blueChamp.skill + redChamp.skill)
+      then 1
+      else 0
+
+    def blueWon(): Int =
+      if decideWinner(blue, red) == 1
+      then 1
+      else 0
+
+    def repeatPlay(blueWins: Int, matchesLeft: Float): Float =
+      if matchesLeft == 0 then blueWins / totalMatches
+      else
+        repeatPlay(
+          blueWins + blueWon(),
+          matchesLeft - 1
+        )
+
+    val winPercert = repeatPlay(0, totalMatches)
+    assert(winPercert > .8)
+    assert(winPercert != 1)
+
+  }
+
 }

@@ -1,3 +1,4 @@
+import scala.util.Random
 class Match(bluePlayer: Int, redPlayer: Int, config: GameConfig) {
   val history = runMatch()
 
@@ -15,7 +16,9 @@ class Match(bluePlayer: Int, redPlayer: Int, config: GameConfig) {
     )
 
   def decideWinner(blueChamp: Champion, redChamp: Champion): Side =
-    if blueChamp.skill > redChamp.skill then Side.Blueside else Side.Redside
+    if blueChamp.skill >= Random.nextInt(blueChamp.skill + redChamp.skill)
+    then Side.Blueside
+    else Side.Redside
 
   def updateRecords(
       blueChamp: Champion,
