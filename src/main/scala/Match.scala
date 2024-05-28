@@ -16,7 +16,7 @@ class Match(bluePlayer: Int, redPlayer: Int, config: GameConfig) {
     )
 
   def decideWinner(blueChamp: Champion, redChamp: Champion): Side =
-    if blueChamp.skill >= Random.nextInt(blueChamp.skill + redChamp.skill)
+    if blueChamp.skill > Random.nextInt(blueChamp.skill + redChamp.skill)
     then Side.Blueside
     else Side.Redside
 

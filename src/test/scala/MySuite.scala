@@ -62,22 +62,31 @@ class MySuite extends munit.FunSuite {
     assertEquals(round.history.getMatches().length, 2)
   }
 
-  test("win ratios test") {
-    val config = GameConfig(3, 2)
-    val dummyMatch = Match(0, 1, config)
+  test("high win likelyhood test") {
     val blue = Champion("nine", 9)
     val red = Champion("one", 1)
+    ratioTest(blue, red, 0.8f, 1.0f)
+  }
+
+  test("low win likelyhood test") {
+    val blue = Champion("one", 1)
+    val red = Champion("nine", 9)
+    ratioTest(blue, red, 0.0f, 0.2f)
+  }
+
+  test("equal win likelyhood test") {
+    val blue = Champion("five", 5)
+    val red = Champion("five", 5)
+    ratioTest(blue, red, 0.4f, 0.6f)
+  }
+
+  def ratioTest(blue: Champion, red: Champion, low: Float, high: Float): Unit =
     val totalMatches = 1000f
-
-    def returnblueside(): Side = Side.Blueside
-
-    def decideWinner(blueChamp: Champion, redChamp: Champion): Int =
-      if blueChamp.skill > Random.nextInt(blueChamp.skill + redChamp.skill)
-      then 1
-      else 0
+    val config = GameConfig(3, 2)
+    val dummyMatch = Match(0, 1, config)
 
     def blueWon(): Int =
-      if decideWinner(blue, red) == 1
+      if dummyMatch.decideWinner(blue, red) == Side.Blueside
       then 1
       else 0
 
@@ -90,9 +99,7 @@ class MySuite extends munit.FunSuite {
         )
 
     val winPercert = repeatPlay(0, totalMatches)
-    assert(winPercert > .8)
-    assert(winPercert != 1)
-
-  }
+    assert(winPercert > low)
+    assert(winPercert < high)
 
 }
