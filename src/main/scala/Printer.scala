@@ -1,13 +1,16 @@
 import scala.util.{Using, Try}
 import java.io.{BufferedWriter, File, FileWriter}
-import Base.*
 
 class Printer {
-  // def printTournament(tourny: Tournament): Unit =
-
-  def writeFile(filename: String, content: String): Try[Unit] =
+  def writeToFile(tourny: Tournament, filename: String): Unit =
     Using(BufferedWriter(FileWriter(File(filename), true))) { bufferedWriter =>
-      bufferedWriter.write(content)
+      writeConfig(
+        bufferedWriter,
+        "Simple",
+        tourny.history.getNumRounds(),
+        tourny.config
+      )
+      writeTournament(bufferedWriter, tourny.history)
     }
 
   def writeConfig(
@@ -17,10 +20,29 @@ class Printer {
       config: GameConfig
   ): Unit =
     var content =
-      tournamentType + "\t" + numRounds + "\t" + config.numPlayers + "\t"
+      tournamentType + "\t" + numRounds + "\t" + config.ListOfPlayers.length + "\t" + config.ListOfChamps.length + "\t1\tY\tN"
+    writer.write(content)
 
-  def addPiece(piece: String, line: String): String =
-    line + "\t" + piece
+  def writeTournament(
+      writer: BufferedWriter,
+      thistory: TournamentHistory
+  ): Unit =
+    def writeRound(rhistory: RoundHistory): Unit =
+      var line = ""
+      def addMatch(mhistory: MatchHistory): String =
+        // val winningSide =
+        //   mhistory.winner match
+        //     case Side.Blueside => "Blueside"
+        //     case _             => "Redside"
+        val blueSide =
+          mhistory.blueSide._1.toString() + "\t" + mhistory.blueSide._2
+            .toString()
+        val redSide =
+          mhistory.redSide._1.toString() + "\t" + mhistory.redSide._2.toString()
+        mhistory.winner.toString() + "\t" + blueSide + "\t" + redSide + "\t"
+      for matchHistory <- rhistory.matches do line += addMatch(matchHistory)
+      writeLine(writer, line)
+    for roundHistory <- thistory.rounds do writeRound(roundHistory)
 
   def writeLine(writer: BufferedWriter, content: String): Unit =
     writer.newLine()
