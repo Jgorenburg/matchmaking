@@ -1,5 +1,6 @@
-@main def hello(): Unit =
-  val test = Tournament(10, 10, 5)
-  println(test.history)
+import SimpleTournament.SimpleGameConfig
+import base.Tournament
 
-def msg = "I was compiled by Scala 3. :)"
+@main def hello(): Unit =
+  val test = Tournament(SimpleGameConfig(10, 10), 15)
+  println(test.history)
