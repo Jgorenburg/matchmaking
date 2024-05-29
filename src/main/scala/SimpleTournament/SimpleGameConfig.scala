@@ -1,6 +1,6 @@
 package SimpleTournament
 
-import base.{GameConfig, Champion}
+import base.{GameConfig, Champion, Player}
 import scala.io.Source
 import java.io.File
 
@@ -19,9 +19,8 @@ class SimpleGameConfig(numPlayers: Int, numChamps: Int)
     listOfFishies.zipWithIndex.map(tup => Champion(tup._1, tup._2)).toVector
   }
 
-  val ListOfPlayers: Vector[SimplePlayer] = {
+  var ListOfPlayers: Vector[Player] =
     (1 to numPlayers).toVector.map(i => SimplePlayer { ListOfChamps })
-  }
 
   def makeMatch(bluePlayer: Int, redPlayer: Int) =
     SimpleMatch(bluePlayer, redPlayer, this)
