@@ -1,4 +1,7 @@
+package base
+
 import scala.util.Random
+
 class Round(roundNum: Int, config: GameConfig) {
   val history: RoundHistory = runRound()
 
@@ -9,7 +12,7 @@ class Round(roundNum: Int, config: GameConfig) {
         return matches
       }
       val game: Match =
-        Match(pos, pos + 1, config)
+        config.makeMatch(pos, pos + 1)
       matches.addMatch(game.history)
       runMatches(pos + 2, matches)
     runMatches(0, RoundHistory(roundNum))

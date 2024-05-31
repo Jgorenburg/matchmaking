@@ -1,3 +1,5 @@
+package base
+
 class Record:
   var wins = 0
   var games = 0

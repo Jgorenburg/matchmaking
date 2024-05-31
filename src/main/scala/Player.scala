@@ -1,12 +1,23 @@
+package base
+
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.Queue
 import scala.util.Random
 import scala.collection.mutable.ArrayBuffer
-class Player(val champions: Vector[Champion]):
-  val memory: HashMap[Champion, Record] =
-    champions.foldRight(new HashMap())((champ, map) =>
-      map += (champ -> Record())
-    )
+import scala.collection.mutable
+
+trait Player extends MemoryHandling:
+
+  val memory: HashMap[Champion, Record]
+  def chooseChampion(oppChoice: Option[Vector[Champion]]): Champion
+  def chooseBlueChampion(): Champion
+  def chooseRedChampion(champ: Champion): Champion
+
+  override def toString(): String = super.toString().split("@")(1)
+
+trait WinRecord:
+  val memory: HashMap[Champion, Record]
+
   def getWinPercent(champ: Champion): Float =
     return memory(champ).getWinPercent()
 
@@ -20,25 +31,36 @@ class Player(val champions: Vector[Champion]):
     else if getWinPercent(newChamp) < getWinPercent(curBest(0)) then curBest
     else curBest :+ newChamp
 
-  def chooseChampion(oppChoice: Option[Champion]): Champion =
+  def getBestRecord(
+      listOfChampions: Vector[Champion],
+      disallowed: Option[Vector[Champion]]
+  ): Champion =
     def champFilter(curChamp: Champion): Boolean =
-      oppChoice match
-        case Some(champ) =>
-          champ != curChamp
+      disallowed match
+        case Some(champs) =>
+          !champs.contains(curChamp)
         case _ => true
     def pickAtRandom(list: Vector[Champion]) =
       list(Random.nextInt(list.size))
     pickAtRandom(
-      champions
+      listOfChampions
         .filter(champ => champFilter(champ))
         .foldRight(Vector[Champion]())((curChoice, champs) =>
           betterRecord(curChoice, champs)
         )
     )
 
-  def chooseBlueChampion(): Champion = chooseChampion(None)
-  def chooseRedChampion(champ: Champion): Champion = chooseChampion(Some(champ))
+trait MemoryHandling:
+  val memory: HashMap[Champion, Record]
+  val champions: Vector[Champion]
 
   def updateRecord(myChamp: Champion, oppChamp: Champion, win: Boolean) =
     memory(myChamp).updateRecord(win)
     memory(oppChamp).updateRecord(!win)
+
+trait SingleChampMemoryHandling extends MemoryHandling:
+
+  val memory: HashMap[Champion, Record] =
+    champions.foldRight(new HashMap())((champ, map) =>
+      map += (champ -> Record())
+    )
