@@ -1,10 +1,11 @@
-package SimpleTournament
+package SimpleRandomTournament
 
 import base.{GameConfig, Champion, Player}
 import scala.io.Source
 import java.io.File
+import SimpleTournament.SimplePlayer
 
-class SimpleGameConfig(numPlayers: Int, numChamps: Int)
+class RandomGameConfig(numPlayers: Int, numChamps: Int)
     extends GameConfig(numPlayers, numChamps):
 
   type TypeOfPlayer = SimplePlayer
@@ -24,4 +25,4 @@ class SimpleGameConfig(numPlayers: Int, numChamps: Int)
     (1 to numPlayers).toVector.map(i => SimplePlayer { ListOfChamps })
 
   def makeMatch(bluePlayer: Int, redPlayer: Int) =
-    SimpleMatch(bluePlayer, redPlayer, this)
+    RandomMatch(bluePlayer, redPlayer, this)
