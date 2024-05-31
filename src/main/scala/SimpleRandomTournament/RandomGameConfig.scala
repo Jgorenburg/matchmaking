@@ -1,6 +1,6 @@
 package SimpleRandomTournament
 
-import base.{GameConfig, Champion, Player}
+import Base.{GameConfig, Champion, Player}
 import scala.io.Source
 import java.io.File
 import SimpleTournament.SimplePlayer

@@ -1,4 +1,4 @@
-package base
+package Base
 
 trait Match(bluePlayer: Int, redPlayer: Int, config: GameConfig)
     extends RulesOfPlay {

@@ -1,4 +1,4 @@
-package base
+package Base
 
 trait RulesOfPlay extends TeamMaker, Winner {
   def runMatch(): MatchHistory

@@ -1,4 +1,4 @@
-package base
+package Base
 
 trait TeamMaker {
   def makeTeams(

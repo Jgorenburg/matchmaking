@@ -1,6 +1,6 @@
 import SimpleTournament.SimpleGameConfig
 import SimpleRandomTournament.RandomGameConfig
-import base.Tournament
+import Base.Tournament
 
 @main def hello(): Unit =
   val simpleconfig = SimpleGameConfig(10, 10)

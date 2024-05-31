@@ -1,4 +1,4 @@
-package base
+package Base
 
 import scala.collection.mutable.ArrayBuffer
 class TournamentHistory {

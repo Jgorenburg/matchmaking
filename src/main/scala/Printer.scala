@@ -1,6 +1,6 @@
 import scala.util.{Using, Try}
 import java.io.{BufferedWriter, File, FileWriter}
-import base.{
+import Base.{
   GameConfig,
   Player,
   Tournament,

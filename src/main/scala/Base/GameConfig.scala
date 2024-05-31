@@ -1,4 +1,4 @@
-package base
+package Base
 
 trait GameConfig(numPlayers: Int, numChamps: Int):
   type TypeOfPlayer <: Player

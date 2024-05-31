@@ -1,4 +1,4 @@
-package base
+package Base
 
 sealed trait Named { self: Champion =>
   override def toString() = self.name

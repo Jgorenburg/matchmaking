@@ -1,4 +1,4 @@
-package base
+package Base
 
 final case class Team(
     player: Player,

@@ -1,4 +1,4 @@
-package base
+package Base
 
 class Tournament(
     config: GameConfig,
