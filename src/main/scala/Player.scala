@@ -12,6 +12,8 @@ trait Player extends MemoryHandling:
   def chooseBlueChampion(): Champion
   def chooseRedChampion(champ: Champion): Champion
 
+  override def toString(): String = super.toString().split("@")(1)
+
 trait WinRecord:
   val memory: HashMap[Champion, Record]
 

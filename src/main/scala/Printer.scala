@@ -1,17 +1,18 @@
 import scala.util.{Using, Try}
 import java.io.{BufferedWriter, File, FileWriter}
+import base.{Player, Tournament}
 
 class Printer {
   def writeToFile(tourny: Tournament, filename: String): Unit =
-    Using(BufferedWriter(FileWriter(File(filename), true))) { bufferedWriter =>
+    Using(BufferedWriter(FileWriter(File(filename), false))) { bufferedWriter =>
       writeConfig(
         bufferedWriter,
         "Simple",
         tourny.history.getNumRounds(),
-        tourny.config
+        tourny.getConfig()
       )
       writeTournament(bufferedWriter, tourny.history)
-      writePlayers(bufferedWriter, tourny.config.ListOfPlayers)
+      writePlayers(bufferedWriter, tourny.getConfig().ListOfPlayers)
     }
 
   def writeConfig(

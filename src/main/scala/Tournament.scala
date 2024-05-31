@@ -14,4 +14,6 @@ class Tournament(
       rounds.addRound(round.history)
       return runRounds(roundNum + 1, rounds)
     return runRounds(0, TournamentHistory())
+  def getConfig(): GameConfig = config
+
 }
