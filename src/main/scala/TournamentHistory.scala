@@ -1,3 +1,5 @@
+package base
+
 import scala.collection.mutable.ArrayBuffer
 class TournamentHistory {
   val rounds = ArrayBuffer[RoundHistory]()
