@@ -7,6 +7,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable
 
 trait Player extends MemoryHandling:
+
   val memory: HashMap[Champion, Record]
   def chooseChampion(oppChoice: Option[Vector[Champion]]): Champion
   def chooseBlueChampion(): Champion
@@ -51,13 +52,13 @@ trait WinRecord:
 
 trait MemoryHandling:
   val memory: HashMap[Champion, Record]
+  val champions: Vector[Champion]
 
   def updateRecord(myChamp: Champion, oppChamp: Champion, win: Boolean) =
     memory(myChamp).updateRecord(win)
     memory(oppChamp).updateRecord(!win)
 
 trait SingleChampMemoryHandling extends MemoryHandling:
-  val champions: Vector[Champion]
 
   val memory: HashMap[Champion, Record] =
     champions.foldRight(new HashMap())((champ, map) =>
