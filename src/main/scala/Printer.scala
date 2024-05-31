@@ -1,6 +1,13 @@
 import scala.util.{Using, Try}
 import java.io.{BufferedWriter, File, FileWriter}
-import base.{Player, Tournament}
+import base.{
+  GameConfig,
+  Player,
+  Tournament,
+  TournamentHistory,
+  RoundHistory,
+  MatchHistory
+}
 
 class Printer {
   def writeToFile(tourny: Tournament, filename: String): Unit =
