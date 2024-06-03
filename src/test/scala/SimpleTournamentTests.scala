@@ -1,5 +1,5 @@
 import SimpleTournament.{SimpleGameConfig, SimpleMatch, SimplePlayer}
-import base.{Champion, Round, Side}
+import Base.{Champion, Round, Side}
 
 class SimpleTournamentTests extends munit.FunSuite {
   test("basic player test") {
