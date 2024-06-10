@@ -49,7 +49,7 @@ class SimpleTournamentTests extends munit.FunSuite {
     val config = SimpleGameConfig(4, 2)
     val round = Round(0, config)
 
-    assertEquals(round.history.getRoundNum(), 0)
-    assertEquals(round.history.getMatches().length, 2)
+    assertEquals(round.history.roundNum, 0)
+    assertEquals(round.history.matches.length, 2)
   }
 }
