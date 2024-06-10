@@ -1,7 +1,7 @@
 package Base
 
 trait RulesOfPlay extends TeamMaker, Winner {
-  def runMatch(): MatchHistory
+  val history: MatchHistory
   def updateRecords(teams: (Champion, Champion), winner: Side): Unit
 }
 
