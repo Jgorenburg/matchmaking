@@ -48,6 +48,7 @@ class Printer {
       for matchHistory <- rhistory.matches do line += addMatch(matchHistory)
       writeLine(writer, line)
     for roundHistory <- thistory.rounds do writeRound(roundHistory)
+
   def writePlayers(writer: BufferedWriter, players: Vector[Player]): Unit =
     def writePlayer(player: Player): Unit =
       var line = player.toString()
