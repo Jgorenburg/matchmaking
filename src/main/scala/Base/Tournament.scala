@@ -1,10 +1,11 @@
 package Base
 
 class Tournament(
-    config: GameConfig,
+    gameConfig: GameConfig,
     numRounds: Int
 ) {
   val history = runTournament()
+  val config = gameConfig
   def runTournament(): TournamentHistory =
     def runRounds(roundNum: Int, rounds: TournamentHistory): TournamentHistory =
       if (roundNum >= numRounds) {
@@ -12,8 +13,6 @@ class Tournament(
       }
       val round = Round(roundNum, config)
       rounds.addRound(round.history)
-      return runRounds(roundNum + 1, rounds)
-    return runRounds(0, TournamentHistory())
-  def getConfig(): GameConfig = config
-
+      runRounds(roundNum + 1, rounds)
+    runRounds(0, TournamentHistory())
 }

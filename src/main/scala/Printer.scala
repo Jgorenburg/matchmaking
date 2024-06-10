@@ -16,10 +16,10 @@ class Printer {
         bufferedWriter,
         "Simple",
         tourny.history.getNumRounds(),
-        tourny.getConfig()
+        tourny.config
       )
       writeTournament(bufferedWriter, tourny.history)
-      writePlayers(bufferedWriter, tourny.getConfig().ListOfPlayers)
+      writePlayers(bufferedWriter, tourny.config.ListOfPlayers)
     }
 
   def writeConfig(
