@@ -4,9 +4,8 @@ class Tournament(
     gameConfig: GameConfig,
     numRounds: Int
 ) {
-  val history = runTournament()
   val config = gameConfig
-  def runTournament(): TournamentHistory =
+  val history: TournamentHistory =
     def runRounds(roundNum: Int, rounds: TournamentHistory): TournamentHistory =
       if (roundNum >= numRounds) {
         return rounds

@@ -19,7 +19,7 @@ trait WinRecord:
   val memory: HashMap[Champion, Record]
 
   def getWinPercent(champ: Champion): Float =
-    return memory(champ).getWinPercent()
+    return memory(champ).getWinPercent
 
   def betterRecord(
       newChamp: Champion,

@@ -15,7 +15,7 @@ class Printer {
       writeConfig(
         bufferedWriter,
         "Simple",
-        tourny.history.getNumRounds(),
+        tourny.history.getNumRounds,
         tourny.config
       )
       writeTournament(bufferedWriter, tourny.history)
