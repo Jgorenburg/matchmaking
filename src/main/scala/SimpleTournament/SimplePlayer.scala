@@ -7,9 +7,8 @@ import scala.collection.mutable.ArrayBuffer
 import Base.{Champion, Player, SingleChampMemoryHandling, Record, WinRecord}
 
 class SimplePlayer(val champions: Vector[Champion])
-    extends Player,
-      SingleChampMemoryHandling,
-      WinRecord:
+    extends Player
+    with SingleChampMemoryHandling:
 
   def chooseChampion(oppChoice: Option[Vector[Champion]]): Champion =
     getBestRecord(champions, oppChoice)

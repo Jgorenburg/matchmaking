@@ -5,8 +5,8 @@ import scala.io.Source
 import java.io.File
 import SimpleTournament.SimplePlayer
 
-class RandomGameConfig(numPlayers: Int, numChamps: Int)
-    extends GameConfig(numPlayers, numChamps):
+class RandomGameConfig(val numPlayers: Int, val numChamps: Int)
+    extends GameConfig:
 
   type TypeOfPlayer = SimplePlayer
   val ListOfChamps: Vector[Champion] = {

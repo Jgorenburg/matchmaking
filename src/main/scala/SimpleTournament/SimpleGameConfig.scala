@@ -4,8 +4,8 @@ import Base.{GameConfig, Champion, Player}
 import scala.io.Source
 import java.io.File
 
-class SimpleGameConfig(numPlayers: Int, numChamps: Int)
-    extends GameConfig(numPlayers, numChamps):
+class SimpleGameConfig(val numPlayers: Int, val numChamps: Int)
+    extends GameConfig:
 
   type TypeOfPlayer = SimplePlayer
   val ListOfChamps: Vector[Champion] = {

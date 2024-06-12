@@ -1,9 +1,11 @@
 package Base
 
-trait GameConfig(numPlayers: Int, numChamps: Int):
+trait GameConfig:
   type TypeOfPlayer <: Player
 
-  val ListOfChamps: Vector[Champion]
+  def numPlayers: Int
+  def numChamps: Int
+  def ListOfChamps: Vector[Champion]
   var ListOfPlayers: Vector[TypeOfPlayer]
   def makeMatch(bluePlayer: Int, redPlayer: Int): Match
 

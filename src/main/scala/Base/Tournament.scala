@@ -1,10 +1,9 @@
 package Base
 
 class Tournament(
-    gameConfig: GameConfig,
+    val config: GameConfig,
     numRounds: Int
 ) {
-  val config = gameConfig
   val history: TournamentHistory =
     def runRounds(roundNum: Int, rounds: TournamentHistory): TournamentHistory =
       if (roundNum >= numRounds) {
