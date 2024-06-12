@@ -1,7 +1,9 @@
 package Base
 
-trait Match(bluePlayer: Int, redPlayer: Int, config: GameConfig)
-    extends RulesOfPlay {
+trait Match extends TeamMaker, Winner {
+  def bluePlayer: Int
+  def redPlayer: Int
+  def config: GameConfig
   val history: MatchHistory =
     val teams =
       makeTeams(bluePlayer, redPlayer, config)
