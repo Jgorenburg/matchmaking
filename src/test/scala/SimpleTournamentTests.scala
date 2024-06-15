@@ -16,7 +16,7 @@ class SimpleTournamentTests extends munit.FunSuite {
   test("basic match test") {
     val config = SimpleGameConfig(2, 2)
     val testMatch =
-      SimpleMatch(0, 1, config)
+      SimpleMatch(config.getPlayer(0), config.getPlayer(1))
 
     assertEquals(
       config.ListOfPlayers(0).getWinPercent(config.ListOfChamps(0)),
@@ -39,8 +39,9 @@ class SimpleTournamentTests extends munit.FunSuite {
 
   test("player learning test") {
     val config = SimpleGameConfig(3, 2)
-    val firstMatch = SimpleMatch(0, 1, config)
-    val secondMatch = SimpleMatch(0, 2, config)
+    val firstMatch = SimpleMatch(config.getPlayer(0), config.getPlayer(1))
+
+    val secondMatch = SimpleMatch(config.getPlayer(0), config.getPlayer(2))
 
     assertEquals(secondMatch.history.winner, Side.Blueside)
   }

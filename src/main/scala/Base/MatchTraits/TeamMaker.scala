@@ -2,21 +2,19 @@ package Base
 
 trait TeamMaker {
   def makeTeams(
-      bluePlayer: Int,
-      redPlayer: Int,
-      config: GameConfig
+      bluePlayer: Player,
+      redPlayer: Player
   ): (Champion, Champion)
 }
 
 trait SimpleTeamMaker extends TeamMaker {
   def makeTeams(
-      bluePlayer: Int,
-      redPlayer: Int,
-      config: GameConfig
+      bluePlayer: Player,
+      redPlayer: Player
   ): (Champion, Champion) =
     val blueChamp: Champion =
-      config.getPlayer(bluePlayer).chooseBlueChampion()
+      bluePlayer.chooseBlueChampion()
     val redChamp: Champion =
-      config.getPlayer(redPlayer).chooseRedChampion(blueChamp)
+      redPlayer.chooseRedChampion(blueChamp)
     (blueChamp, redChamp)
 }

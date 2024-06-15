@@ -1,11 +1,11 @@
-import SimpleTournament.SimpleGameConfig
-import SimpleRandomTournament.RandomGameConfig
-import Base.Tournament
+import Base.{GameConfig, Tournament}
+import PlayerTypes.SimplePlayerMaker
+import MatchTypes.{RandomMatchMaker, SimpleMatchMaker}
 
 @main def hello(): Unit =
-  val simpleconfig = SimpleGameConfig(10, 10)
+  val simpleconfig = new GameConfig(10, 10, SimplePlayerMaker, SimpleMatchMaker)
   val simpletourny = Tournament(simpleconfig, 15)
-  val randomconfig = RandomGameConfig(10, 10)
+  val randomconfig = new GameConfig(10, 10, SimplePlayerMaker, RandomMatchMaker)
   val randomtourny = Tournament(randomconfig, 15)
   val printer = new Printer
   printer.writeToFile(simpletourny, "results/salmon.txt")

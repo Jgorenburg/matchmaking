@@ -1,10 +1,11 @@
-package SimpleTournament
+package PlayerTypes
 
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.Queue
 import scala.util.Random
 import scala.collection.mutable.ArrayBuffer
-import Base.{Champion, Player, SingleChampMemoryHandling, Record, WinRecord}
+import Base.{Champion, Player, PlayerMaker}
+import Base.{SingleChampMemoryHandling, Record, WinRecord}
 
 class SimplePlayer(val champions: Vector[Champion])
     extends Player
@@ -16,3 +17,6 @@ class SimplePlayer(val champions: Vector[Champion])
   def chooseRedChampion(champ: Champion): Champion = chooseChampion(
     Some(Vector { champ })
   )
+
+object SimplePlayerMaker extends PlayerMaker:
+  def makePlayer(champions: Vector[Champion]) = new SimplePlayer(champions)

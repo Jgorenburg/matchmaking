@@ -17,7 +17,7 @@ class RandomTournamentTests extends munit.FunSuite {
   test("basic match test") {
     val config = RandomGameConfig(2, 2)
     val testMatch =
-      RandomMatch(0, 1, config)
+      RandomMatch(config.getPlayer(0), config.getPlayer(1))
 
     assertEquals(
       config.ListOfPlayers(0).getWinPercent(config.ListOfChamps(0)),
@@ -40,8 +40,8 @@ class RandomTournamentTests extends munit.FunSuite {
 
   test("player learning test") {
     val config = RandomGameConfig(3, 2)
-    val firstMatch = RandomMatch(0, 1, config)
-    val secondMatch = RandomMatch(0, 2, config)
+    val firstMatch = RandomMatch(config.getPlayer(0), config.getPlayer(1))
+    val secondMatch = RandomMatch(config.getPlayer(0), config.getPlayer(2))
 
     assertEquals(secondMatch.history.winner, Side.Blueside)
   }
@@ -75,7 +75,7 @@ class RandomTournamentTests extends munit.FunSuite {
   def ratioTest(blue: Champion, red: Champion, low: Float, high: Float): Unit =
     val totalMatches = 1000f
     val config = RandomGameConfig(3, 2)
-    val dummyMatch = RandomMatch(0, 1, config)
+    val dummyMatch = RandomMatch(config.getPlayer(0), config.getPlayer(1))
 
     def blueWon(): Int =
       if dummyMatch.decideWinner(blue, red) == Side.Blueside
