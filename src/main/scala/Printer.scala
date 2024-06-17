@@ -53,8 +53,9 @@ class Printer {
     def writePlayer(player: Player): Unit =
       var line = player.toString()
       for champ <- player.memory do
+        val champion = champ._1
         val record = champ._2
-        line += "\t" + champ._1.toString() +
+        line += "\t" + champion + "\t" + champion.skill +
           "\t" + record.wins + "\t" + record.games
       writeLine(writer, line)
     for player <- players do writePlayer(player)
