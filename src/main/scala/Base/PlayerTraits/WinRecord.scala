@@ -10,8 +10,8 @@ trait WinRecord:
     return memory(champ).getWinPercent
 
   def betterRecord(
-      newChamp: Champion,
-      curBest: Vector[Champion]
+      curBest: Vector[Champion],
+      newChamp: Champion
   ): Vector[Champion] =
     if curBest.isEmpty then Vector(newChamp)
     else if getWinPercent(newChamp) > getWinPercent(curBest(0)) then
@@ -28,12 +28,11 @@ trait WinRecord:
         case Some(champs) =>
           !champs.contains(curChamp)
         case _ => true
-    def pickAtRandom(list: Vector[Champion]) =
-      list(Random.nextInt(list.size))
-    pickAtRandom(
-      listOfChampions
-        .filter(champ => champFilter(champ))
-        .foldRight(Vector[Champion]())((curChoice, champs) =>
-          betterRecord(curChoice, champs)
-        )
-    )
+    val pickableChamps = listOfChampions.filter(champFilter)
+
+    assert(!pickableChamps.isEmpty)
+    val bestChamps: Vector[Champion] =
+      (Vector(pickableChamps.head) /: pickableChamps.tail)(betterRecord)
+
+    bestChamps(Random.nextInt(bestChamps.size))
+
