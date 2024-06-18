@@ -1,17 +1,16 @@
 package Base
 
-trait Match(bluePlayer: Int, redPlayer: Int, config: GameConfig)
-    extends RulesOfPlay {
-  val history = runMatch()
-
-  def runMatch(): MatchHistory =
+trait Match extends TeamMaker, Winner {
+  def bluePlayer: Player
+  def redPlayer: Player
+  val history: MatchHistory =
     val teams =
-      makeTeams(bluePlayer, redPlayer, config)
+      makeTeams(bluePlayer, redPlayer)
     val winner: Side = decideWinner(teams)
     updateRecords(teams, winner)
-    return MatchHistory(
-      (config.getPlayer(bluePlayer), teams(0)),
-      (config.getPlayer(redPlayer), teams(1)),
+    MatchHistory(
+      (bluePlayer, teams(0)),
+      (redPlayer, teams(1)),
       winner
     )
 
@@ -20,11 +19,10 @@ trait Match(bluePlayer: Int, redPlayer: Int, config: GameConfig)
       winner: Side
   ) =
     val (blueChamp, redChamp) = teams
-    config
-      .getPlayer(bluePlayer)
-      .updateRecord(blueChamp, redChamp, winner == Side.Blueside)
-    config
-      .getPlayer(redPlayer)
-      .updateRecord(redChamp, blueChamp, winner == Side.Redside)
+    bluePlayer.updateRecord(blueChamp, redChamp, winner == Side.Blueside)
+    redPlayer.updateRecord(redChamp, blueChamp, winner == Side.Redside)
 
 }
+
+trait MatchMaker:
+  def makeMatch(bluePlayer: Player, redPlayer: Player): Match

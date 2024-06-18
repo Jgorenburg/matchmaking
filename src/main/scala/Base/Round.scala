@@ -3,9 +3,7 @@ package Base
 import scala.util.Random
 
 class Round(roundNum: Int, config: GameConfig) {
-  val history: RoundHistory = runRound()
-
-  def runRound(): RoundHistory =
+  val history: RoundHistory =
     config.ListOfPlayers = Random.shuffle(config.ListOfPlayers)
     def runMatches(pos: Int, matches: RoundHistory): RoundHistory =
       if (config.ListOfPlayers.length - pos < 2) {

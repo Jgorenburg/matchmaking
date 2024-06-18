@@ -15,11 +15,11 @@ class Printer {
       writeConfig(
         bufferedWriter,
         "Simple",
-        tourny.history.getNumRounds(),
-        tourny.getConfig()
+        tourny.history.getNumRounds,
+        tourny.config
       )
       writeTournament(bufferedWriter, tourny.history)
-      writePlayers(bufferedWriter, tourny.getConfig().ListOfPlayers)
+      writePlayers(bufferedWriter, tourny.config.ListOfPlayers)
     }
 
   def writeConfig(
@@ -48,12 +48,14 @@ class Printer {
       for matchHistory <- rhistory.matches do line += addMatch(matchHistory)
       writeLine(writer, line)
     for roundHistory <- thistory.rounds do writeRound(roundHistory)
+
   def writePlayers(writer: BufferedWriter, players: Vector[Player]): Unit =
     def writePlayer(player: Player): Unit =
       var line = player.toString()
       for champ <- player.memory do
+        val champion = champ._1
         val record = champ._2
-        line += "\t" + champ._1.toString() +
+        line += "\t" + champion + "\t" + champion.skill +
           "\t" + record.wins + "\t" + record.games
       writeLine(writer, line)
     for player <- players do writePlayer(player)
