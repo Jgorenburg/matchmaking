@@ -1,27 +1,14 @@
 package Base
 
-import scala.io.Source
-import java.io.File
-
 class GameConfig(
     val numPlayers: Int,
     val numChamps: Int,
     val playerMaker: PlayerMaker,
-    val matchMaker: MatchMaker
+    val matchMaker: MatchMaker,
+    val metaMaker: MetaMaker
 ):
-  val listOfChamps: Array[Champion] = {
-    val listOfFishies = {
-      val src = Source.fromFile(
-        new File(getClass.getClassLoader.getResource("fishies.txt").getPath)
-      )
-      val lines = src.getLines.take(numChamps).toList
-      src.close
-      lines
-    }
-    listOfFishies.map(Champion(_)).toArray
-  }
-
-  val meta = new Meta(listOfChamps)
+  val listOfChamps = metaMaker.makeChamps(numChamps)
+  val meta = metaMaker.makeMeta(listOfChamps)
 
   var listOfPlayers: Vector[Player] =
     (1 to numPlayers).toVector.map(i => playerMaker.makePlayer(listOfChamps))
