@@ -4,7 +4,7 @@ import scala.collection.mutable.HashMap
 
 trait MemoryHandling:
   def memory: HashMap[Champion, Record]
-  def champions: Vector[Champion]
+  def champions: Array[Champion]
 
   def updateRecord(myChamp: Champion, oppChamp: Champion, win: Boolean) =
     memory(myChamp).updateRecord(win)

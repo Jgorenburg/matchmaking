@@ -4,9 +4,9 @@ import scala.util.Random
 
 class Round(roundNum: Int, config: GameConfig) {
   val history: RoundHistory =
-    config.ListOfPlayers = Random.shuffle(config.ListOfPlayers)
+    config.listOfPlayers = Random.shuffle(config.listOfPlayers)
     def runMatches(pos: Int, matches: RoundHistory): RoundHistory =
-      if (config.ListOfPlayers.length - pos < 2) {
+      if (config.listOfPlayers.length - pos < 2) {
         return matches
       }
       val game: Match =

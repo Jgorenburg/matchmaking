@@ -25,4 +25,4 @@ trait Match extends TeamMaker, Winner {
 }
 
 trait MatchMaker:
-  def makeMatch(bluePlayer: Player, redPlayer: Player): Match
+  def makeMatch(bluePlayer: Player, redPlayer: Player, meta: Meta): Match

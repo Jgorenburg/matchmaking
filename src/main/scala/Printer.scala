@@ -6,7 +6,8 @@ import Base.{
   Tournament,
   TournamentHistory,
   RoundHistory,
-  MatchHistory
+  MatchHistory,
+  Meta
 }
 
 class Printer {
@@ -18,8 +19,12 @@ class Printer {
         tourny.history.getNumRounds,
         tourny.config
       )
+      writePlayers(
+        bufferedWriter,
+        tourny.config.listOfPlayers,
+        tourny.config.meta
+      )
       writeTournament(bufferedWriter, tourny.history)
-      writePlayers(bufferedWriter, tourny.config.ListOfPlayers)
     }
 
   def writeConfig(
@@ -29,7 +34,7 @@ class Printer {
       config: GameConfig
   ): Unit =
     var content =
-      tournamentType + "\t" + numRounds + "\t" + config.ListOfPlayers.length + "\t" + config.ListOfChamps.length + "\t1\tY\tN"
+      tournamentType + "\t" + numRounds + "\t" + config.listOfPlayers.length + "\t" + config.listOfChamps.length + "\t1\tY\tN"
     writer.write(content)
 
   def writeTournament(
@@ -49,13 +54,17 @@ class Printer {
       writeLine(writer, line)
     for roundHistory <- thistory.rounds do writeRound(roundHistory)
 
-  def writePlayers(writer: BufferedWriter, players: Vector[Player]): Unit =
+  def writePlayers(
+      writer: BufferedWriter,
+      players: Vector[Player],
+      meta: Meta
+  ): Unit =
     def writePlayer(player: Player): Unit =
       var line = player.toString()
       for champ <- player.memory do
         val champion = champ._1
         val record = champ._2
-        line += "\t" + champion + "\t" + champion.skill +
+        line += "\t" + champion + "\t" + meta.champStrength(champion) +
           "\t" + record.wins + "\t" + record.games
       writeLine(writer, line)
     for player <- players do writePlayer(player)

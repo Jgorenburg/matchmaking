@@ -20,8 +20,8 @@ trait WinRecord:
     else curBest :+ newChamp
 
   def getBestRecord(
-      listOfChampions: Vector[Champion],
-      disallowed: Option[Vector[Champion]]
+      listOfChampions: Array[Champion],
+      disallowed: Option[Array[Champion]]
   ): Champion =
     def champFilter(curChamp: Champion): Boolean =
       disallowed match
@@ -35,4 +35,3 @@ trait WinRecord:
       (Vector(pickableChamps.head) /: pickableChamps.tail)(betterRecord)
 
     bestChamps(Random.nextInt(bestChamps.size))
-

@@ -7,16 +7,16 @@ import scala.collection.mutable.ArrayBuffer
 import Base.{Champion, Player, PlayerMaker}
 import Base.{SingleChampMemoryHandling, Record, WinRecord}
 
-class SimplePlayer(val champions: Vector[Champion])
+class SimplePlayer(val champions: Array[Champion])
     extends Player
     with SingleChampMemoryHandling:
 
-  def chooseChampion(oppChoice: Option[Vector[Champion]]): Champion =
+  def chooseChampion(oppChoice: Option[Array[Champion]]): Champion =
     getBestRecord(champions, oppChoice)
   def chooseBlueChampion(): Champion = chooseChampion(None)
   def chooseRedChampion(champ: Champion): Champion = chooseChampion(
-    Some(Vector { champ })
+    Some(Array { champ })
   )
 
 object SimplePlayerMaker extends PlayerMaker:
-  def makePlayer(champions: Vector[Champion]) = new SimplePlayer(champions)
+  def makePlayer(champions: Array[Champion]) = new SimplePlayer(champions)

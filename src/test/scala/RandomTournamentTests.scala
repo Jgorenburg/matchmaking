@@ -1,38 +1,39 @@
 import Base.{Champion, GameConfig, Round, Side}
 import PlayerTypes.{SimplePlayer, SimplePlayerMaker}
 import MatchTypes.{RandomMatch, RandomMatchMaker}
+import Base.Meta
 
 class RandomTournamentTests extends munit.FunSuite {
   test("basic player test") {
-    val champ = Champion("ayu", 1)
-    val player = SimplePlayer(Vector(Champion("ayu", 1)))
+    val champ = Champion("ayu")
+    val player = SimplePlayer(Array(Champion("ayu")))
     assertEquals(player.champions(0), champ)
   }
   test("basic config test") {
     val config = GameConfig(1, 1, SimplePlayerMaker, RandomMatchMaker)
-    val champ = Champion("Amazon sailfin catfish", 0)
-    assertEquals(config.ListOfChamps(0), champ)
-    assertEquals(config.ListOfPlayers(0).champions(0), champ)
+    val champ = Champion("Amazon sailfin catfish")
+    assertEquals(config.listOfChamps(0), champ)
+    assertEquals(config.listOfPlayers(0).champions(0), champ)
   }
   test("basic match test") {
     val config = GameConfig(2, 2, SimplePlayerMaker, RandomMatchMaker)
     val testMatch =
-      RandomMatch(config.getPlayer(0), config.getPlayer(1))
+      RandomMatch(config.getPlayer(0), config.getPlayer(1), config.meta)
 
     assertEquals(
-      config.ListOfPlayers(0).getWinPercent(config.ListOfChamps(0)),
+      config.listOfPlayers(0).getWinPercent(config.listOfChamps(0)),
       0.0f
     )
     assertEquals(
-      config.ListOfPlayers(0).getWinPercent(config.ListOfChamps(1)),
+      config.listOfPlayers(0).getWinPercent(config.listOfChamps(1)),
       1.0f
     )
     assertEquals(
-      config.ListOfPlayers(1).getWinPercent(config.ListOfChamps(0)),
+      config.listOfPlayers(1).getWinPercent(config.listOfChamps(0)),
       0.0f
     )
     assertEquals(
-      config.ListOfPlayers(1).getWinPercent(config.ListOfChamps(1)),
+      config.listOfPlayers(1).getWinPercent(config.listOfChamps(1)),
       1.0f
     )
 
@@ -40,8 +41,10 @@ class RandomTournamentTests extends munit.FunSuite {
 
   test("player learning test") {
     val config = GameConfig(3, 2, SimplePlayerMaker, RandomMatchMaker)
-    val firstMatch = RandomMatch(config.getPlayer(0), config.getPlayer(1))
-    val secondMatch = RandomMatch(config.getPlayer(0), config.getPlayer(2))
+    val firstMatch =
+      RandomMatch(config.getPlayer(0), config.getPlayer(1), config.meta)
+    val secondMatch =
+      RandomMatch(config.getPlayer(0), config.getPlayer(2), config.meta)
 
     assertEquals(secondMatch.history.winner, Side.Blueside)
   }
@@ -55,27 +58,28 @@ class RandomTournamentTests extends munit.FunSuite {
   }
 
   test("high win likelyhood test") {
-    val blue = Champion("nine", 9)
-    val red = Champion("one", 1)
-    ratioTest(blue, red, 0.8f, 1.0f)
+    ratioTest(9, 1)
   }
 
   test("low win likelyhood test") {
-    val blue = Champion("one", 1)
-    val red = Champion("nine", 9)
-    ratioTest(blue, red, 0.0f, 0.2f)
+    ratioTest(1, 9)
   }
 
   test("equal win likelyhood test") {
-    val blue = Champion("five", 5)
-    val red = Champion("five", 5)
-    ratioTest(blue, red, 0.4f, 0.6f)
+    ratioTest(5, 5)
   }
 
-  def ratioTest(blue: Champion, red: Champion, low: Float, high: Float): Unit =
+  def ratioTest(
+      blueStrength: Int,
+      redStrength: Int
+  ): Unit =
     val totalMatches = 1000f
-    val config = GameConfig(3, 2, SimplePlayerMaker, RandomMatchMaker)
-    val dummyMatch = RandomMatch(config.getPlayer(0), config.getPlayer(1))
+    val blue = Champion("blue")
+    val red = Champion("red")
+    val meta = new Meta(Map(blue -> blueStrength, red -> redStrength))
+    val bluePlayer, redPlayer = SimplePlayerMaker.makePlayer(Array(blue, red))
+    val dummyMatch =
+      RandomMatch(bluePlayer, redPlayer, meta)
 
     def blueWon(): Int =
       if dummyMatch.decideWinner(blue, red) == Side.Blueside
@@ -91,6 +95,7 @@ class RandomTournamentTests extends munit.FunSuite {
         )
 
     val winPercert = repeatPlay(0, totalMatches)
-    assert(winPercert > low)
-    assert(winPercert < high)
+    val expected = blueStrength / (redStrength + blueStrength + 0.0f)
+    assert(winPercert > expected - 0.1)
+    assert(winPercert < expected + 0.1)
 }

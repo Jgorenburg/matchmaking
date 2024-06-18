@@ -9,7 +9,7 @@ class GameConfig(
     val playerMaker: PlayerMaker,
     val matchMaker: MatchMaker
 ):
-  val ListOfChamps: Vector[Champion] = {
+  val listOfChamps: Array[Champion] = {
     val listOfFishies = {
       val src = Source.fromFile(
         new File(getClass.getClassLoader.getResource("fishies.txt").getPath)
@@ -18,14 +18,17 @@ class GameConfig(
       src.close
       lines
     }
-    listOfFishies.zipWithIndex.map(tup => Champion(tup._1, tup._2)).toVector
+    listOfFishies.map(Champion(_)).toArray
   }
-  var ListOfPlayers: Vector[Player] =
-    (1 to numPlayers).toVector.map(i => playerMaker.makePlayer(ListOfChamps))
+
+  val meta = new Meta(listOfChamps)
+
+  var listOfPlayers: Vector[Player] =
+    (1 to numPlayers).toVector.map(i => playerMaker.makePlayer(listOfChamps))
 
   def makeMatch(bluePlayer: Int, redPlayer: Int): Match =
-    matchMaker.makeMatch(getPlayer(bluePlayer), getPlayer(redPlayer))
+    matchMaker.makeMatch(getPlayer(bluePlayer), getPlayer(redPlayer), meta)
 
-  def getPlayer(pos: Int): Player = ListOfPlayers(
+  def getPlayer(pos: Int): Player = listOfPlayers(
     pos
   )

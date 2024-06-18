@@ -3,19 +3,24 @@ package Base
 import scala.util.Random
 
 trait Winner {
+  def meta: Meta
   def decideWinner(teams: (Champion, Champion)): Side
 }
 
 trait PureSkillWinner extends Winner {
   def decideWinner(teams: (Champion, Champion)): Side =
     val (blueChamp, redChamp) = teams
-    if blueChamp.skill > redChamp.skill then Side.Blueside else Side.Redside
+    if meta.champStrength(blueChamp) > meta.champStrength(redChamp) then
+      Side.Blueside
+    else Side.Redside
 }
 
 trait SkillAndVarianceWinner extends Winner {
   def decideWinner(teams: (Champion, Champion)): Side =
     val (blueChamp, redChamp) = teams
-    if blueChamp.skill > Random.nextInt(blueChamp.skill + redChamp.skill)
+    if meta.champStrength(blueChamp) > Random.nextInt(
+        meta.champStrength(blueChamp) + meta.champStrength(redChamp)
+      )
     then Side.Blueside
     else Side.Redside
 }

@@ -4,35 +4,35 @@ import MatchTypes.{SimpleMatch, SimpleMatchMaker}
 
 class SimpleTournamentTests extends munit.FunSuite {
   test("basic player test") {
-    val champ = Champion("ayu", 1)
-    val player = SimplePlayer(Vector(Champion("ayu", 1)))
+    val champ = Champion("ayu")
+    val player = SimplePlayer(Array(Champion("ayu")))
     assertEquals(player.champions(0), champ)
   }
   test("basic config test") {
     val config = GameConfig(1, 1, SimplePlayerMaker, SimpleMatchMaker)
-    val champ = Champion("Amazon sailfin catfish", 0)
-    assertEquals(config.ListOfChamps(0), champ)
-    assertEquals(config.ListOfPlayers(0).champions(0), champ)
+    val champ = Champion("Amazon sailfin catfish")
+    assertEquals(config.listOfChamps(0), champ)
+    assertEquals(config.listOfPlayers(0).champions(0), champ)
   }
   test("basic match test") {
     val config = GameConfig(2, 2, SimplePlayerMaker, SimpleMatchMaker)
     val testMatch =
-      SimpleMatch(config.getPlayer(0), config.getPlayer(1))
+      SimpleMatch(config.getPlayer(0), config.getPlayer(1), config.meta)
 
     assertEquals(
-      config.ListOfPlayers(0).getWinPercent(config.ListOfChamps(0)),
+      config.listOfPlayers(0).getWinPercent(config.listOfChamps(0)),
       0.0f
     )
     assertEquals(
-      config.ListOfPlayers(0).getWinPercent(config.ListOfChamps(1)),
+      config.listOfPlayers(0).getWinPercent(config.listOfChamps(1)),
       1.0f
     )
     assertEquals(
-      config.ListOfPlayers(1).getWinPercent(config.ListOfChamps(0)),
+      config.listOfPlayers(1).getWinPercent(config.listOfChamps(0)),
       0.0f
     )
     assertEquals(
-      config.ListOfPlayers(1).getWinPercent(config.ListOfChamps(1)),
+      config.listOfPlayers(1).getWinPercent(config.listOfChamps(1)),
       1.0f
     )
 
@@ -40,9 +40,11 @@ class SimpleTournamentTests extends munit.FunSuite {
 
   test("player learning test") {
     val config = GameConfig(3, 2, SimplePlayerMaker, SimpleMatchMaker)
-    val firstMatch = SimpleMatch(config.getPlayer(0), config.getPlayer(1))
+    val firstMatch =
+      SimpleMatch(config.getPlayer(0), config.getPlayer(1), config.meta)
 
-    val secondMatch = SimpleMatch(config.getPlayer(0), config.getPlayer(2))
+    val secondMatch =
+      SimpleMatch(config.getPlayer(0), config.getPlayer(2), config.meta)
 
     assertEquals(secondMatch.history.winner, Side.Blueside)
   }
