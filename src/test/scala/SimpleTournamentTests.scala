@@ -1,5 +1,6 @@
-import SimpleTournament.{SimpleGameConfig, SimpleMatch, SimplePlayer}
-import Base.{Champion, Round, Side}
+import Base.{Champion, GameConfig, Round, Side}
+import PlayerTypes.{SimplePlayer, SimplePlayerMaker}
+import MatchTypes.{SimpleMatch, SimpleMatchMaker}
 
 class SimpleTournamentTests extends munit.FunSuite {
   test("basic player test") {
@@ -8,13 +9,13 @@ class SimpleTournamentTests extends munit.FunSuite {
     assertEquals(player.champions(0), champ)
   }
   test("basic config test") {
-    val config = SimpleGameConfig(1, 1)
+    val config = GameConfig(1, 1, SimplePlayerMaker, SimpleMatchMaker)
     val champ = Champion("Amazon sailfin catfish", 0)
     assertEquals(config.ListOfChamps(0), champ)
     assertEquals(config.ListOfPlayers(0).champions(0), champ)
   }
   test("basic match test") {
-    val config = SimpleGameConfig(2, 2)
+    val config = GameConfig(2, 2, SimplePlayerMaker, SimpleMatchMaker)
     val testMatch =
       SimpleMatch(config.getPlayer(0), config.getPlayer(1))
 
@@ -38,7 +39,7 @@ class SimpleTournamentTests extends munit.FunSuite {
   }
 
   test("player learning test") {
-    val config = SimpleGameConfig(3, 2)
+    val config = GameConfig(3, 2, SimplePlayerMaker, SimpleMatchMaker)
     val firstMatch = SimpleMatch(config.getPlayer(0), config.getPlayer(1))
 
     val secondMatch = SimpleMatch(config.getPlayer(0), config.getPlayer(2))
@@ -47,7 +48,7 @@ class SimpleTournamentTests extends munit.FunSuite {
   }
 
   test("simple round test") {
-    val config = SimpleGameConfig(4, 2)
+    val config = GameConfig(4, 2, SimplePlayerMaker, SimpleMatchMaker)
     val round = Round(0, config)
 
     assertEquals(round.history.roundNum, 0)
