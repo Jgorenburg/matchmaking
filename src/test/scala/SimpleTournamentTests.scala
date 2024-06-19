@@ -1,6 +1,14 @@
-import Base.{Champion, GameConfig, Round, Side}
+import Base.{
+  Champion,
+  GameConfig,
+  Match,
+  PureSkillWinner,
+  Round,
+  Side,
+  SimpleTeamMaker
+}
 import PlayerTypes.{SimplePlayer, SimplePlayerMaker}
-import MatchTypes.{SimpleMatch, SimpleMatchMaker}
+import MatchTypes.SimpleMatchMaker
 import MetaTypes.BasicMetaMaker
 
 class SimpleTournamentTests extends munit.FunSuite {
@@ -20,7 +28,9 @@ class SimpleTournamentTests extends munit.FunSuite {
     val config =
       GameConfig(2, 2, SimplePlayerMaker, SimpleMatchMaker, BasicMetaMaker)
     val testMatch =
-      SimpleMatch(config.getPlayer(0), config.getPlayer(1), config.meta)
+      new Match(config.getPlayer(0), config.getPlayer(1), config.meta)
+        with SimpleTeamMaker
+        with PureSkillWinner
 
     assertEquals(
       config.listOfPlayers(0).getWinPercent(config.listOfChamps(0)),
@@ -45,10 +55,14 @@ class SimpleTournamentTests extends munit.FunSuite {
     val config =
       GameConfig(3, 2, SimplePlayerMaker, SimpleMatchMaker, BasicMetaMaker)
     val firstMatch =
-      SimpleMatch(config.getPlayer(0), config.getPlayer(1), config.meta)
+      new Match(config.getPlayer(0), config.getPlayer(1), config.meta)
+        with SimpleTeamMaker
+        with PureSkillWinner
 
     val secondMatch =
-      SimpleMatch(config.getPlayer(0), config.getPlayer(2), config.meta)
+      new Match(config.getPlayer(0), config.getPlayer(2), config.meta)
+        with SimpleTeamMaker
+        with PureSkillWinner
 
     assertEquals(secondMatch.history.winner, Side.Blueside)
   }

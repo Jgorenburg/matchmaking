@@ -1,8 +1,11 @@
 package Base
 
-trait Match extends TeamMaker, Winner {
-  def bluePlayer: Player
-  def redPlayer: Player
+trait Match(
+    val bluePlayer: Player,
+    val redPlayer: Player,
+    val meta: Meta
+) extends TeamMaker,
+      Winner {
   val history: MatchHistory =
     val teams =
       makeTeams(bluePlayer, redPlayer)

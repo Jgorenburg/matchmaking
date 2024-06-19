@@ -1,6 +1,15 @@
-import Base.{Champion, GameConfig, Meta, Round, Side}
+import Base.{
+  Champion,
+  GameConfig,
+  Match,
+  Meta,
+  Round,
+  Side,
+  SimpleTeamMaker,
+  SkillAndVarianceWinner
+}
 import PlayerTypes.{SimplePlayer, SimplePlayerMaker}
-import MatchTypes.{RandomMatch, RandomMatchMaker}
+import MatchTypes.RandomMatchMaker
 import MetaTypes.BasicMetaMaker
 
 class RandomTournamentTests extends munit.FunSuite {
@@ -20,7 +29,9 @@ class RandomTournamentTests extends munit.FunSuite {
     val config =
       GameConfig(2, 2, SimplePlayerMaker, RandomMatchMaker, BasicMetaMaker)
     val testMatch =
-      RandomMatch(config.getPlayer(0), config.getPlayer(1), config.meta)
+      new Match(config.getPlayer(0), config.getPlayer(1), config.meta)
+        with SimpleTeamMaker
+        with SkillAndVarianceWinner
 
     assertEquals(
       config.listOfPlayers(0).getWinPercent(config.listOfChamps(0)),
@@ -45,9 +56,13 @@ class RandomTournamentTests extends munit.FunSuite {
     val config =
       GameConfig(3, 2, SimplePlayerMaker, RandomMatchMaker, BasicMetaMaker)
     val firstMatch =
-      RandomMatch(config.getPlayer(0), config.getPlayer(1), config.meta)
+      new Match(config.getPlayer(0), config.getPlayer(1), config.meta)
+        with SimpleTeamMaker
+        with SkillAndVarianceWinner
     val secondMatch =
-      RandomMatch(config.getPlayer(0), config.getPlayer(2), config.meta)
+      new Match(config.getPlayer(0), config.getPlayer(2), config.meta)
+        with SimpleTeamMaker
+        with SkillAndVarianceWinner
 
     assertEquals(secondMatch.history.winner, Side.Blueside)
   }
@@ -83,7 +98,9 @@ class RandomTournamentTests extends munit.FunSuite {
     val meta = new Meta(Map(blue -> blueStrength, red -> redStrength))
     val bluePlayer, redPlayer = SimplePlayerMaker.makePlayer(Array(blue, red))
     val dummyMatch =
-      RandomMatch(bluePlayer, redPlayer, meta)
+      new Match(bluePlayer, redPlayer, meta)
+        with SimpleTeamMaker
+        with SkillAndVarianceWinner
 
     def blueWon(): Int =
       if dummyMatch.decideWinner(blue, red) == Side.Blueside
