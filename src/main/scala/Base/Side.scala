@@ -1,6 +1,5 @@
 package Base
 
-enum Side {
-  case Redside
-  case Blueside
+object Side extends Enumeration {
+  val Redside, Blueside = Value
 }

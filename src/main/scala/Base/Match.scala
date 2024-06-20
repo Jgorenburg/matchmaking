@@ -6,7 +6,7 @@ trait Match extends TeamMaker, Winner {
   val history: MatchHistory =
     val teams =
       makeTeams(bluePlayer, redPlayer)
-    val winner: Side = decideWinner(teams)
+    val winner: Side.Value = decideWinner(teams)
     updateRecords(teams, winner)
     MatchHistory(
       (bluePlayer, teams(0)),
@@ -16,7 +16,7 @@ trait Match extends TeamMaker, Winner {
 
   def updateRecords(
       teams: (Champion, Champion),
-      winner: Side
+      winner: Side.Value
   ) =
     val (blueChamp, redChamp) = teams
     bluePlayer.updateRecord(blueChamp, redChamp, winner == Side.Blueside)
