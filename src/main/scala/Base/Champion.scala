@@ -1,7 +1,16 @@
 package Base
 
-sealed trait Named { self: Champion =>
-  override def toString() = self.name
-}
+object Playstyle extends Enumeration:
+  type Playstyle = Value
+  val Default = Value("Default")
+  def makeStyle = (s: String) => Value(s)
 
-case class Champion(name: String) extends Named
+abstract class Champion:
+  val name: String
+  val playstyle: Playstyle.Value
+  override def toString() = name
+
+case class Default(name: String) extends Champion:
+  val playstyle = Playstyle.Default
+case class Specialized(name: String, style: String) extends Champion:
+  val playstyle = Playstyle.makeStyle(style)

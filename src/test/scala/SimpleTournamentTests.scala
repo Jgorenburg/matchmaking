@@ -1,5 +1,5 @@
 import Base.{
-  Champion,
+  Default,
   GameConfig,
   Match,
   PureSkillWinner,
@@ -10,23 +10,24 @@ import Base.{
 import PlayerTypes.{SimplePlayer, SimplePlayerMaker}
 import MatchTypes.SimpleMatchMaker
 import MetaTypes.BasicMetaMaker
+import GameTypes.BasicGame
 
 class SimpleTournamentTests extends munit.FunSuite {
   test("basic player test") {
-    val champ = Champion("ayu")
-    val player = SimplePlayer(Array(Champion("ayu")))
+    val champ = Default("ayu")
+    val player = SimplePlayer(Array(Default("ayu")))
     assertEquals(player.champions(0), champ)
   }
   test("basic config test") {
     val config =
-      GameConfig(1, 1, SimplePlayerMaker, SimpleMatchMaker, BasicMetaMaker)
-    val champ = Champion("Amazon sailfin catfish")
+      GameConfig(1, 1, SimplePlayerMaker, SimpleMatchMaker, BasicGame)
+    val champ = Default("Amazon sailfin catfish")
     assertEquals(config.listOfChamps(0), champ)
     assertEquals(config.listOfPlayers(0).champions(0), champ)
   }
   test("basic match test") {
     val config =
-      GameConfig(2, 2, SimplePlayerMaker, SimpleMatchMaker, BasicMetaMaker)
+      GameConfig(2, 2, SimplePlayerMaker, SimpleMatchMaker, BasicGame)
     val testMatch =
       new Match(config.getPlayer(0), config.getPlayer(1), config.meta)
         with SimpleTeamMaker
@@ -53,7 +54,7 @@ class SimpleTournamentTests extends munit.FunSuite {
 
   test("player learning test") {
     val config =
-      GameConfig(3, 2, SimplePlayerMaker, SimpleMatchMaker, BasicMetaMaker)
+      GameConfig(3, 2, SimplePlayerMaker, SimpleMatchMaker, BasicGame)
     val firstMatch =
       new Match(config.getPlayer(0), config.getPlayer(1), config.meta)
         with SimpleTeamMaker
@@ -69,7 +70,7 @@ class SimpleTournamentTests extends munit.FunSuite {
 
   test("simple round test") {
     val config =
-      GameConfig(4, 2, SimplePlayerMaker, SimpleMatchMaker, BasicMetaMaker)
+      GameConfig(4, 2, SimplePlayerMaker, SimpleMatchMaker, BasicGame)
     val round = Round(0, config)
 
     assertEquals(round.history.roundNum, 0)
