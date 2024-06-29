@@ -65,7 +65,7 @@ class Printer {
         val champion = champ._1
         val record = champ._2
         line += "\t" + champion + "\t" + meta.champStrength(champion) +
-          "\t" + record.wins + "\t" + record.games
+          "\t" + record.wins.toInt + "\t" + record.games.toInt
       writeLine(writer, line)
     for player <- players do writePlayer(player)
 
