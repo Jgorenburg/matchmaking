@@ -3,16 +3,13 @@ package Base
 import scala.collection.mutable.HashMap
 
 trait MemoryHandling:
-  def memory: HashMap[Champion, Record]
+  type RecordType <: Record
+  def makeRecord(): RecordType
+  def memory: HashMap[Champion, RecordType]
   def champions: Array[Champion]
 
-  def updateRecord(myChamp: Champion, oppChamp: Champion, win: Boolean) =
-    memory(myChamp).updateRecord(win)
-    memory(oppChamp).updateRecord(!win)
-
 trait SingleChampMemoryHandling extends MemoryHandling:
-
-  final val memory: HashMap[Champion, Record] =
+  final val memory: HashMap[Champion, RecordType] =
     champions.foldRight(new HashMap())((champ, map) =>
-      map += (champ -> Record())
+      map += (champ -> makeRecord())
     )

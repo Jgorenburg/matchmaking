@@ -1,5 +1,5 @@
 import Base.{GameConfig, Tournament}
-import PlayerTypes.SimplePlayerMaker
+import PlayerTypes.{SimplePlayerMaker, MatchupAwarePlayerMaker}
 import MatchTypes.{RandomMatchMaker, SimpleMatchMaker}
 import GameTypes.{BasicGame, RockPaperScissors}
 
@@ -14,7 +14,7 @@ import GameTypes.{BasicGame, RockPaperScissors}
     new GameConfig(
       2,
       3,
-      SimplePlayerMaker,
+      MatchupAwarePlayerMaker,
       SimpleMatchMaker,
       RockPaperScissors
     )
