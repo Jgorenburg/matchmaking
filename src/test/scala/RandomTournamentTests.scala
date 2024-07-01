@@ -98,7 +98,8 @@ class RandomTournamentTests extends munit.FunSuite {
     val blue = Default("blue")
     val red = Default("red")
     val meta =
-      BasicMetaMaker.makeMeta(Map(blue -> blueStrength, red -> redStrength))
+      val maker = new BasicMetaMaker
+      maker.makeMeta(Map(blue -> blueStrength, red -> redStrength))
     val bluePlayer, redPlayer = SimplePlayerMaker.makePlayer(Array(blue, red))
     val dummyMatch =
       new Match(bluePlayer, redPlayer, meta)
