@@ -8,5 +8,4 @@ trait GameMaker:
   def metaMaker: MetaMaker
   def makeMeta(
       listOfChamps: Array[Champion]
-  ) =
-    metaMaker.makeMeta(listOfChamps, playstyles)
+  ): Meta

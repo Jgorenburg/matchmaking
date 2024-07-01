@@ -4,6 +4,7 @@ object Playstyle extends Enumeration:
   type Playstyle = Value
   val Default = Value("Default")
   def makeStyle = (s: String) => Value(s)
+  def makeStyles = (as: Array[String]) => as.map(makeStyle)
 
 abstract class Champion:
   val name: String
@@ -12,5 +13,5 @@ abstract class Champion:
 
 case class Default(name: String) extends Champion:
   val playstyle = Playstyle.Default
-case class Specialized(name: String, style: String) extends Champion:
-  val playstyle = Playstyle.makeStyle(style)
+case class Specialized(name: String, playstyle: Playstyle.Value)
+    extends Champion

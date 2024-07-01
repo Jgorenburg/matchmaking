@@ -9,17 +9,16 @@ trait Winner {
 
 trait PureSkillWinner extends Winner {
   def decideWinner(teams: (Champion, Champion)): Side.Value =
-    val (blueChamp, redChamp) = teams
-    if meta.champStrength(blueChamp) > meta.champStrength(redChamp) then
-      Side.Blueside
+    val (blueStrength, redStrength) = meta.powerComparison(teams)
+    if blueStrength > redStrength then Side.Blueside
     else Side.Redside
 }
 
 trait SkillAndVarianceWinner extends Winner {
   def decideWinner(teams: (Champion, Champion)): Side.Value =
-    val (blueChamp, redChamp) = teams
-    if meta.champStrength(blueChamp) > Random.nextInt(
-        meta.champStrength(blueChamp) + meta.champStrength(redChamp)
+    val (blueStrength, redStrength) = meta.powerComparison(teams)
+    if blueStrength > Random.nextInt(
+        blueStrength + redStrength
       )
     then Side.Blueside
     else Side.Redside

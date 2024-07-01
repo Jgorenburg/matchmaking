@@ -1,9 +1,8 @@
 package GameTypes
 
-import Base.{Champion, Default, GameMaker, Playstyle}
+import Base.{Champion, Default, GameMaker, Meta, MetaMaker, Playstyle}
 import scala.io.Source
 import java.io.File
-import Base.MetaMaker
 import MetaTypes.BasicMetaMaker
 
 object BasicGame extends GameMaker {
@@ -21,6 +20,8 @@ object BasicGame extends GameMaker {
     listOfFishies.map(Default(_)).toArray
   }
 
-  def metaMaker: MetaMaker = BasicMetaMaker
-
+  def metaMaker: MetaMaker = new BasicMetaMaker
+  def makeMeta(
+      listOfChamps: Array[Champion]
+  ): Meta = metaMaker.makeMeta(listOfChamps)
 }
