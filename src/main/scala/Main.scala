@@ -12,8 +12,8 @@ import GameTypes.{BasicGame, RockPaperScissors}
   val randomtourny = Tournament(randomconfig, 1000)
   val basicstyleconfig =
     new GameConfig(
-      10,
-      10,
+      2,
+      3,
       SimplePlayerMaker,
       SimpleMatchMaker,
       RockPaperScissors

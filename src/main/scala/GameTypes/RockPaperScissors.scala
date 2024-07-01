@@ -44,5 +44,5 @@ object RockPaperScissors extends GameMaker {
     )
   )
   def makeMeta(listOfChamps: Array[Champion]): Meta =
-    metaMaker.makeMeta(listOfChamps)
+    metaMaker.makeMeta(listOfChamps.map((_, 1)).toMap)
 }
