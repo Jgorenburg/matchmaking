@@ -18,8 +18,9 @@ class RandomRelationshipMeta(playstyles: Array[Playstyle.Value])
           rels += firstStyle -> Map(secondStyle -> 0)
         } else {
           val relationship = Random.between(-2, 3)
-          rels(firstStyle) += secondStyle -> relationship
-          rels(secondStyle) += firstStyle -> -relationship
+          // one will be 0, other will be 0-2
+          rels(firstStyle) += secondStyle -> List(relationship, 0).max
+          rels(secondStyle) += firstStyle -> List(-relationship, 0).max
         }
       }
       Map() ++ rels.toMap
