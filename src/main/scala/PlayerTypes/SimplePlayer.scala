@@ -24,10 +24,14 @@ class SimplePlayer(val champions: Array[Champion])
   type RecordType = Record
   def makeRecord() = new Record
   def chooseChampion(
-      notPlayable: Option[Array[Champion]],
+      bans: Option[List[Champion]],
       oppChoice: Option[Champion]
   ): Champion =
-    getBestRecord(champions, notPlayable)
+    val unplayable = (bans, oppChoice) match
+      case (Some(arr), Some(champ)) => Some(arr :+ champ)
+      case (None, Some(champ))      => Some(List(champ))
+      case (_, None)                => bans
+    getBestRecord(champions, unplayable)
 
 object SimplePlayerMaker extends PlayerMaker:
   def makePlayer(champions: Array[Champion]) = new SimplePlayer(champions)

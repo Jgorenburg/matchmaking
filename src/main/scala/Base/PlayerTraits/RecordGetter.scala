@@ -22,7 +22,7 @@ trait RecordGetter:
 
   def getBestRecord(
       listOfChampions: Array[Champion],
-      disallowed: Option[Array[Champion]]
+      disallowed: Option[List[Champion]]
   ): Champion =
     def champFilter(curChamp: Champion): Boolean =
       disallowed match
@@ -68,7 +68,7 @@ trait MatchupAwareRecordGetter extends RecordGetter:
 
   def getBestRecord(
       listOfChampions: Array[Champion],
-      disallowed: Option[Array[Champion]],
+      disallowed: Option[List[Champion]],
       oppChamp: Option[Champion]
   ): Champion =
     def champFilter(curChamp: Champion): Boolean =

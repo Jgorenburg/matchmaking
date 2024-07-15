@@ -1,7 +1,8 @@
 import Base.{GameConfig, Tournament}
 import PlayerTypes.{SimplePlayerMaker, MatchupAwarePlayerMaker}
-import MatchTypes.{RandomMatchMaker, SimpleMatchMaker}
+import MatchTypes.{RandomMatchMaker, RandomWithBansMatchmaker, SimpleMatchMaker}
 import GameTypes.{BasicGame, MTG, RockPaperScissors}
+import MatchTypes.SimpleWithBansMatchmaker
 
 @main def hello(): Unit =
   // val simpleconfig =
@@ -19,17 +20,27 @@ import GameTypes.{BasicGame, MTG, RockPaperScissors}
   //     RockPaperScissors
   //   )
   // val basicstyletourny = Tournament(basicstyleconfig, 1000)
-  val mtg =
+  // val mtg =
+  //   new GameConfig(
+  //     4,
+  //     5,
+  //     MatchupAwarePlayerMaker,
+  //     RandomWithBansMatch,
+  //     MTG
+  //   )
+  // val mtgtourney = Tournament(mtg, 1000)
+  val simplebansconfig =
     new GameConfig(
       4,
-      5,
-      MatchupAwarePlayerMaker,
-      RandomMatchMaker,
-      MTG
+      4,
+      SimplePlayerMaker,
+      SimpleWithBansMatchmaker,
+      BasicGame
     )
-  val mtgtourney = Tournament(mtg, 1000)
+  val simplebanstourny = Tournament(simplebansconfig, 1000)
   val printer = new Printer
   // printer.writeToFile(simpletourny, "results/salmon.txt")
   // printer.writeToFile(randomtourny, "results/cod.txt")
-  // printer.writeToFile(basicstyletourny, "results/trout.txt")
-  printer.writeToFile(mtgtourney, "results/mtg.txt")
+  // printer.writeToFile(basicstyletourny, "results/bans.txt")
+  // printer.writeToFile(mtgtourney, "results/bans.txt")
+  printer.writeToFile(simplebanstourny, "results/bans.txt")
