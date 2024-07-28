@@ -1,7 +1,7 @@
 package Base
 
 final case class MatchHistory(
-    blueSide: (Player, Champion),
-    redSide: (Player, Champion),
+    blueSide: (Team, Composition),
+    redSide: (Team, Composition),
     winner: Side.Value
 )

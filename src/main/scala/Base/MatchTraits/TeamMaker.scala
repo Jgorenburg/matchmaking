@@ -6,17 +6,19 @@ trait TeamMaker {
       case Nil => None
       case _   => Some(lst)
 
-  def makeTeams(
-      bluePlayer: Player,
-      redPlayer: Player
-  ): (Champion, Champion)
+  def draftChamps(
+      blueTeam: Team,
+      redTeam: Team
+  ): (Composition, Composition)
 }
 
 trait SimpleTeamMaker extends TeamMaker {
-  def makeTeams(
-      bluePlayer: Player,
-      redPlayer: Player
-  ): (Champion, Champion) =
+  def draftChamps(
+      blueTeam: Team,
+      redTeam: Team
+  ): (Composition, Composition) =
+    val bluePlayer = blueTeam(0)
+    val redPlayer = redTeam(0)
     val blueChamp: Champion =
       bluePlayer.chooseBlueChampion()
     val redChamp: Champion =
@@ -25,10 +27,12 @@ trait SimpleTeamMaker extends TeamMaker {
 }
 
 trait BansAndSinglePlayer extends TeamMaker {
-  def makeTeams(
-      bluePlayer: Player,
-      redPlayer: Player
-  ): (Champion, Champion) =
+  def draftChamps(
+      blueTeam: Team,
+      redTeam: Team
+  ): (Composition, Composition) =
+    val bluePlayer = blueTeam(0)
+    val redPlayer = redTeam(0)
     var bans: List[Champion] = List(bluePlayer.blueBan(None))
     bans = redPlayer.redBan(bans) :: bans
     val blueChamp: Champion =

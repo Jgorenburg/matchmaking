@@ -10,7 +10,7 @@ class Round(roundNum: Int, config: GameConfig) {
         return matches
       }
       val game: Match =
-        config.makeMatch(pos, pos + 1)
+        config.makeMatch(List(pos), List(pos + 1))
       matches.addMatch(game.history)
       runMatches(pos + 2, matches)
     runMatches(0, RoundHistory(roundNum))

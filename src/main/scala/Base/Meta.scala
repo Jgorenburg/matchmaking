@@ -13,10 +13,16 @@ class Meta(
   def styleComparison(champ: Champion, oppChamp: Champion): Int =
     relationshipChart(champ.playstyle)(oppChamp.playstyle)
 
-  def powerComparison(teams: (Champion, Champion)): (Int, Int) =
+  def powerComparison(teamComps: (Composition, Composition)): (Int, Int) =
+    def addChampsStrength(
+        oppTeam: Composition
+    )(champ: Champion, curTeamStrength: Int): Int =
+      oppTeam.foldRight(getStrength(champ))((oppChamp: Champion, sum: Int) =>
+        sum + styleComparison(champ, oppChamp)
+      ) + curTeamStrength
     (
-      getStrength(teams._1) + styleComparison(teams._1, teams._2),
-      getStrength(teams._2) + styleComparison(teams._2, teams._1)
+      teamComps._1.foldRight(0)(addChampsStrength(teamComps._2)),
+      teamComps._2.foldRight(0)(addChampsStrength(teamComps._1))
     )
 
 trait MetaMaker:

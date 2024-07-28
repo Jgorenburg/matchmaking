@@ -1,11 +1,17 @@
 package MatchTypes
 
-  import Base.{BansAndSinglePlayer,Match, MatchMaker, Meta, Player, SkillAndVarianceWinner}
-
+import Base.{
+  BansAndSinglePlayer,
+  Match,
+  MatchMaker,
+  Meta,
+  Player,
+  SkillAndVarianceWinner,
+  Team
+}
 
 object RandomWithBansMatchmaker extends MatchMaker:
-  def makeMatch(bluePlayer: Player, redPlayer: Player, meta: Meta) =
-    new Match(bluePlayer, redPlayer, meta)
+  def makeMatch(blueTeam: Team, redTeam: Team, meta: Meta) =
+    new Match(blueTeam, redTeam, meta)
       with BansAndSinglePlayer
       with SkillAndVarianceWinner
-

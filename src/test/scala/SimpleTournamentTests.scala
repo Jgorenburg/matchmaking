@@ -5,7 +5,9 @@ import Base.{
   PureSkillWinner,
   Round,
   Side,
-  SimpleTeamMaker
+  SimpleTeamMaker,
+  singleChampComposition,
+  singlePlayerTeam
 }
 import PlayerTypes.{SimplePlayer, SimplePlayerMaker}
 import MatchTypes.SimpleMatchMaker
@@ -28,6 +30,7 @@ class SimpleTournamentTests extends munit.FunSuite {
   test("basic match test") {
     val config =
       GameConfig(2, 2, SimplePlayerMaker, SimpleMatchMaker, BasicGame)
+    val bob = 1 + 1
     val testMatch =
       new Match(config.getPlayer(0), config.getPlayer(1), config.meta)
         with SimpleTeamMaker

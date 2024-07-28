@@ -14,7 +14,7 @@ class Record:
 // keeps a general tally of wins and games, as well as a record for each opposing champion
 class MatchupAwareRecords(listOfChamps: Array[Champion]) extends Record:
   val records: Map[Champion, Record] = listOfChamps.map((_, new Record)).toMap
-  def updateRecord(oppChamp: Champion, won: Boolean): Unit =
-    records(oppChamp).updateRecord(won)
+  def updateRecord(oppComp: Composition, won: Boolean): Unit =
+    oppComp.map(records(_).updateRecord(won))
     updateRecord(won)
   def getWinPercent(oppChamp: Champion) = records(oppChamp).getWinPercent

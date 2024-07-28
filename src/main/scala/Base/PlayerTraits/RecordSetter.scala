@@ -5,16 +5,28 @@ import scala.collection.mutable.HashMap
 trait RecordSetter:
   type RecordType <: Record
   def memory: HashMap[Champion, RecordType]
-  def updateRecord(myChamp: Champion, oppChamp: Champion, win: Boolean): Unit
+  def updateRecord(
+      myTeamComp: Composition,
+      oppTeamComp: Composition,
+      win: Boolean
+  ): Unit
 
 trait MatchupBlindRecordSetter extends RecordSetter:
   type RecordType = Record
-  def updateRecord(myChamp: Champion, oppChamp: Champion, win: Boolean) =
-    memory(myChamp).updateRecord(win)
-    memory(oppChamp).updateRecord(!win)
+  def updateRecord(
+      myTeamComp: Composition,
+      oppTeamComp: Composition,
+      win: Boolean
+  ) =
+    myTeamComp.map(memory(_).updateRecord(win))
+    oppTeamComp.map(memory(_).updateRecord(!win))
 
 trait MatchupAwareRecordSetter extends RecordSetter:
   type RecordType = MatchupAwareRecords
-  def updateRecord(myChamp: Champion, oppChamp: Champion, win: Boolean) =
-    memory(myChamp).updateRecord(oppChamp, win)
-    memory(oppChamp).updateRecord(myChamp, !win)
+  def updateRecord(
+      myTeamComp: Composition,
+      oppTeamComp: Composition,
+      win: Boolean
+  ) =
+    myTeamComp.map(memory(_).updateRecord(oppTeamComp, win))
+    oppTeamComp.map(memory(_).updateRecord(myTeamComp, !win))

@@ -1,5 +1,8 @@
 package Base
 
+type Team = List[Player]
+implicit def singlePlayerTeam(player: Player): Team = List(player)
+
 trait Player extends MemoryHandling with RecordGetter with RecordSetter:
   type RecordType <: Record
 

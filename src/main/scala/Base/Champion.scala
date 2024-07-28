@@ -1,5 +1,8 @@
 package Base
 
+type Composition = List[Champion]
+implicit def singleChampComposition(champ: Champion): Composition = List(champ)
+
 object Playstyle extends Enumeration:
   type Playstyle = Value
   val Default = Value("Default")

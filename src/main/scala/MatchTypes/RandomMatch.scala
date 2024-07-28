@@ -6,11 +6,12 @@ import Base.{
   Meta,
   Player,
   SimpleTeamMaker,
-  SkillAndVarianceWinner
+  SkillAndVarianceWinner,
+  Team
 }
 
 object RandomMatchMaker extends MatchMaker:
-  def makeMatch(bluePlayer: Player, redPlayer: Player, meta: Meta) =
-    new Match(bluePlayer, redPlayer, meta)
+  def makeMatch(blueTeam: Team, redTeam: Team, meta: Meta) =
+    new Match(blueTeam, redTeam, meta)
       with SimpleTeamMaker
       with SkillAndVarianceWinner

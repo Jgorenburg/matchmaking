@@ -1,9 +1,15 @@
 package MatchTypes
 
-import Base.{Match, MatchMaker, Meta, Player, SimpleTeamMaker, PureSkillWinner}
+import Base.{
+  Match,
+  MatchMaker,
+  Meta,
+  Player,
+  SimpleTeamMaker,
+  PureSkillWinner,
+  Team
+}
 
 object SimpleMatchMaker extends MatchMaker:
-  def makeMatch(bluePlayer: Player, redPlayer: Player, meta: Meta) =
-    new Match(bluePlayer, redPlayer, meta)
-      with SimpleTeamMaker
-      with PureSkillWinner
+  def makeMatch(blueTeam: Team, redTeam: Team, meta: Meta) =
+    new Match(blueTeam, redTeam, meta) with SimpleTeamMaker with PureSkillWinner

@@ -7,6 +7,8 @@ import Base.{
   Round,
   Side,
   SimpleTeamMaker,
+  singleChampComposition,
+  singlePlayerTeam,
   SkillAndVarianceWinner
 }
 import PlayerTypes.{SimplePlayer, SimplePlayerMaker}
