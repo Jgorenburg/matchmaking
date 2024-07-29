@@ -28,4 +28,4 @@ trait Match(
 }
 
 trait MatchMaker:
-  def makeMatch(bluePlayer: Team, redPlayer: Team, meta: Meta): Match
+  def makeMatch(blueTeam: Team, redTeam: Team, meta: Meta): Match
