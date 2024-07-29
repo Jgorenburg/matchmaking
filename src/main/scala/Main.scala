@@ -6,15 +6,16 @@ import MatchTypes.SimpleWithBansMatchmaker
 
 @main def hello(): Unit =
   val simpleconfig =
-    new GameConfig(10, 10, SimplePlayerMaker, SimpleMatchMaker, BasicGame)
+    new GameConfig(10, 10, 1, SimplePlayerMaker, SimpleMatchMaker, BasicGame)
   val simpletourny = Tournament(simpleconfig, 1000)
   val randomconfig =
-    new GameConfig(10, 10, SimplePlayerMaker, RandomMatchMaker, BasicGame)
+    new GameConfig(10, 10, 1, SimplePlayerMaker, RandomMatchMaker, BasicGame)
   val randomtourny = Tournament(randomconfig, 1000)
   val basicstyleconfig =
     new GameConfig(
       2,
       3,
+      1,
       MatchupAwarePlayerMaker,
       RandomMatchMaker,
       RockPaperScissors
@@ -24,6 +25,7 @@ import MatchTypes.SimpleWithBansMatchmaker
     new GameConfig(
       4,
       5,
+      1,
       MatchupAwarePlayerMaker,
       RandomMatchMaker,
       MTG
@@ -33,6 +35,7 @@ import MatchTypes.SimpleWithBansMatchmaker
     new GameConfig(
       4,
       4,
+      1,
       SimplePlayerMaker,
       SimpleWithBansMatchmaker,
       BasicGame
