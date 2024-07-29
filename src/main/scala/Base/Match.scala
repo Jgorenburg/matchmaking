@@ -7,21 +7,22 @@ trait Match(
 ) extends TeamMaker,
       Winner {
   val history: MatchHistory =
-    val teamComps =
+    val (blueComp, redComp, bans) =
       draftChamps(blueTeam, redTeam)
-    val winner: Side.Value = decideWinner(teamComps)
-    updateRecords(teamComps, winner)
+    val winner: Side.Value = decideWinner(blueComp, redComp)
+    updateRecords(blueComp, redComp, winner)
     MatchHistory(
-      (blueTeam, teamComps(0)),
-      (redTeam, teamComps(1)),
-      winner
+      (blueTeam, blueComp),
+      (redTeam, redComp),
+      winner,
+      bans
     )
 
   def updateRecords(
-      teamComps: (Composition, Composition),
+      blueComp: Composition,
+      redComp: Composition,
       winner: Side.Value
   ) =
-    val (blueComp, redComp) = teamComps
     blueTeam.map(_.updateRecord(blueComp, redComp, winner == Side.Blueside))
     redTeam.map(_.updateRecord(redComp, blueComp, winner == Side.Redside))
 

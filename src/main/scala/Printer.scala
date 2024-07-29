@@ -12,7 +12,7 @@ import Base.{
   MatchHistory,
   Meta
 }
-
+//TODO: Add bans + tournament type to config
 class Printer {
   def writeToFile(tourny: Tournament, filename: String): Unit =
     Using(BufferedWriter(FileWriter(File(filename), false))) { bufferedWriter =>
@@ -56,11 +56,16 @@ class Printer {
       var line = ""
       def addMatch(mhistory: MatchHistory): String =
         val blueSide =
-          mhistory.blueSide._1.toString() + "\t" + mhistory.blueSide._2
-            .toString()
+          mhistory.blueSide._1.mkString(", ") + "\t" + mhistory.blueSide._2
+            .mkString(", ")
         val redSide =
-          mhistory.redSide._1.toString() + "\t" + mhistory.redSide._2.toString()
-        mhistory.winner.toString() + "\t" + blueSide + "\t" + redSide + "\t"
+          mhistory.redSide._1.mkString(", ") + "\t" + mhistory.redSide._2
+            .mkString(", ")
+        val bans =
+          if mhistory.bans.isEmpty then ""
+          else mhistory.bans.mkString(", ") + "\t"
+        mhistory.winner
+          .toString() + "\t" + blueSide + "\t" + redSide + "\t" + bans
       for matchHistory <- rhistory.matches do line += addMatch(matchHistory)
       writeLine(writer, line)
     for roundHistory <- thistory.rounds do writeRound(roundHistory)

@@ -6,7 +6,7 @@ import Base.{
   Meta,
   Round,
   Side,
-  SimpleTeamMaker,
+  SimpleDraft,
   singleChampComposition,
   singlePlayerTeam,
   SkillAndVarianceWinner
@@ -24,17 +24,17 @@ class RandomTournamentTests extends munit.FunSuite {
   }
   test("basic config test") {
     val config =
-      GameConfig(1, 1, SimplePlayerMaker, RandomMatchMaker, BasicGame)
+      GameConfig(1, 1, 1, SimplePlayerMaker, RandomMatchMaker, BasicGame)
     val champ = Default("Amazon sailfin catfish")
     assertEquals(config.listOfChamps(0), champ)
     assertEquals(config.listOfPlayers(0).champions(0), champ)
   }
   test("basic match test") {
     val config =
-      GameConfig(2, 2, SimplePlayerMaker, RandomMatchMaker, BasicGame)
+      GameConfig(2, 2, 1, SimplePlayerMaker, RandomMatchMaker, BasicGame)
     val testMatch =
       new Match(config.getPlayer(0), config.getPlayer(1), config.meta)
-        with SimpleTeamMaker
+        with SimpleDraft
         with SkillAndVarianceWinner
 
     assertEquals(
@@ -58,14 +58,14 @@ class RandomTournamentTests extends munit.FunSuite {
 
   test("player learning test") {
     val config =
-      GameConfig(3, 2, SimplePlayerMaker, RandomMatchMaker, BasicGame)
+      GameConfig(3, 2, 1, SimplePlayerMaker, RandomMatchMaker, BasicGame)
     val firstMatch =
       new Match(config.getPlayer(0), config.getPlayer(1), config.meta)
-        with SimpleTeamMaker
+        with SimpleDraft
         with SkillAndVarianceWinner
     val secondMatch =
       new Match(config.getPlayer(0), config.getPlayer(2), config.meta)
-        with SimpleTeamMaker
+        with SimpleDraft
         with SkillAndVarianceWinner
 
     assertEquals(secondMatch.history.winner, Side.Blueside)
@@ -73,7 +73,7 @@ class RandomTournamentTests extends munit.FunSuite {
 
   test("simple round test") {
     val config =
-      GameConfig(4, 2, SimplePlayerMaker, RandomMatchMaker, BasicGame)
+      GameConfig(4, 2, 1, SimplePlayerMaker, RandomMatchMaker, BasicGame)
     val round = Round(0, config)
 
     assertEquals(round.history.roundNum, 0)
@@ -105,7 +105,7 @@ class RandomTournamentTests extends munit.FunSuite {
     val bluePlayer, redPlayer = SimplePlayerMaker.makePlayer(Array(blue, red))
     val dummyMatch =
       new Match(bluePlayer, redPlayer, meta)
-        with SimpleTeamMaker
+        with SimpleDraft
         with SkillAndVarianceWinner
 
     def blueWon(): Int =

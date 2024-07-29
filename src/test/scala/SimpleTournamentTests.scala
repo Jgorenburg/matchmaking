@@ -5,7 +5,7 @@ import Base.{
   PureSkillWinner,
   Round,
   Side,
-  SimpleTeamMaker,
+  SimpleDraft,
   singleChampComposition,
   singlePlayerTeam
 }
@@ -22,18 +22,18 @@ class SimpleTournamentTests extends munit.FunSuite {
   }
   test("basic config test") {
     val config =
-      GameConfig(1, 1, SimplePlayerMaker, SimpleMatchMaker, BasicGame)
+      GameConfig(1, 1, 1, SimplePlayerMaker, SimpleMatchMaker, BasicGame)
     val champ = Default("Amazon sailfin catfish")
     assertEquals(config.listOfChamps(0), champ)
     assertEquals(config.listOfPlayers(0).champions(0), champ)
   }
   test("basic match test") {
     val config =
-      GameConfig(2, 2, SimplePlayerMaker, SimpleMatchMaker, BasicGame)
+      GameConfig(2, 2, 1, SimplePlayerMaker, SimpleMatchMaker, BasicGame)
     val bob = 1 + 1
     val testMatch =
       new Match(config.getPlayer(0), config.getPlayer(1), config.meta)
-        with SimpleTeamMaker
+        with SimpleDraft
         with PureSkillWinner
 
     assertEquals(
@@ -57,15 +57,15 @@ class SimpleTournamentTests extends munit.FunSuite {
 
   test("player learning test") {
     val config =
-      GameConfig(3, 2, SimplePlayerMaker, SimpleMatchMaker, BasicGame)
+      GameConfig(3, 2, 1, SimplePlayerMaker, SimpleMatchMaker, BasicGame)
     val firstMatch =
       new Match(config.getPlayer(0), config.getPlayer(1), config.meta)
-        with SimpleTeamMaker
+        with SimpleDraft
         with PureSkillWinner
 
     val secondMatch =
       new Match(config.getPlayer(0), config.getPlayer(2), config.meta)
-        with SimpleTeamMaker
+        with SimpleDraft
         with PureSkillWinner
 
     assertEquals(secondMatch.history.winner, Side.Blueside)
@@ -73,7 +73,7 @@ class SimpleTournamentTests extends munit.FunSuite {
 
   test("simple round test") {
     val config =
-      GameConfig(4, 2, SimplePlayerMaker, SimpleMatchMaker, BasicGame)
+      GameConfig(4, 2, 1, SimplePlayerMaker, SimpleMatchMaker, BasicGame)
     val round = Round(0, config)
 
     assertEquals(round.history.roundNum, 0)

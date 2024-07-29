@@ -41,9 +41,20 @@ import MatchTypes.SimpleWithBansMatchmaker
       BasicGame
     )
   val simplebanstourny = Tournament(simplebansconfig, 1000)
+  val teamconfig =
+    new GameConfig(
+      10,
+      10,
+      2,
+      SimplePlayerMaker,
+      SimpleWithBansMatchmaker,
+      BasicGame
+    )
+  val teamtourny = Tournament(teamconfig, 1000)
   val printer = new Printer
   printer.writeToFile(simpletourny, "results/simple.txt")
   printer.writeToFile(randomtourny, "results/random.txt")
   printer.writeToFile(basicstyletourny, "results/rps.txt")
   printer.writeToFile(mtgtourney, "results/mtg.txt")
   printer.writeToFile(simplebanstourny, "results/bans.txt")
+  printer.writeToFile(teamtourny, "results/teams.txt")

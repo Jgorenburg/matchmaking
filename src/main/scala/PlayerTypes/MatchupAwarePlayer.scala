@@ -2,6 +2,7 @@ package PlayerTypes
 
 import Base.{
   Champion,
+  Composition,
   MatchupAware,
   MatchupAwareRecords,
   Player,
@@ -17,15 +18,11 @@ class MatchupAwarePlayer(val champions: Array[Champion])
 
   type RecordType = MatchupAwareRecords
   def makeRecord() = new MatchupAwareRecords(champions)
-  def chooseChampion(
-      bans: Option[List[Champion]],
-      oppChoice: Option[Champion]
+  def getChampion(
+      offLimits: List[Champion],
+      oppComp: Composition
   ): Champion =
-    val unplayable = (bans, oppChoice) match
-      case (Some(arr), Some(champ)) => Some(arr :+ champ)
-      case (None, Some(champ))      => Some(List(champ))
-      case (_, None)                => bans
-    getBestRecord(champions, unplayable, oppChoice)
+    getBestRecord(champions, offLimits, oppComp)
 
 object MatchupAwarePlayerMaker extends PlayerMaker:
   def makePlayer(champions: Array[Champion]) = new MatchupAwarePlayer(champions)

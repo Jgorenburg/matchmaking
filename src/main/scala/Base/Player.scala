@@ -8,31 +8,31 @@ trait Player extends MemoryHandling with RecordGetter with RecordSetter:
 
   override def toString(): String = super.toString().split("@")(1)
 
-  def chooseChampion(
-      bans: Option[List[Champion]],
-      oppChoice: Option[Champion]
+  def getChampion(
+      offLimits: List[Champion],
+      oppComp: Composition = List()
   ): Champion
 
-  def chooseBlueChampion(
-      bans: Option[List[Champion]] = None
-  ): Champion =
-    chooseChampion(bans, None)
+  def chooseChampion(
+      comp: Composition,
+      oppComp: Composition
+  ): Champion = getChampion(comp ::: oppComp, oppComp)
 
-  def chooseRedChampion(
-      champ: Champion,
-      bans: Option[List[Champion]] = None
-  ): Champion = chooseChampion(
-    bans,
-    Some { champ }
-  )
+  def chooseChampion(
+      comp: Composition,
+      oppComp: Composition,
+      bans: List[Champion]
+  ): Champion =
+    getChampion(bans ::: comp ::: oppComp, oppComp)
+
   // ban the counter to your best choice
-  def blueBan(priorBans: Option[List[Champion]]): Champion =
-    val wouldPick = chooseBlueChampion(priorBans)
-    chooseRedChampion(wouldPick, priorBans)
+  def blueBan(priorBans: List[Champion] = List()): Champion =
+    val wouldPick = getChampion(priorBans)
+    chooseChampion(List(), wouldPick, priorBans)
 
   // ban what you view as the best champion
-  def redBan(priorBans: Option[List[Champion]]): Champion =
-    chooseBlueChampion(priorBans)
+  def redBan(priorBans: List[Champion]): Champion =
+    getChampion(priorBans)
 
 trait PlayerMaker:
   def makePlayer(champions: Array[Champion]): Player

@@ -5,6 +5,8 @@ import scala.util.Random
 trait Winner {
   def meta: Meta
   def decideWinner(teamComps: (Composition, Composition)): Side.Value
+  def decideWinner(blueComp: Composition, redComp: Composition): Side.Value =
+    decideWinner((blueComp, redComp))
 }
 
 trait PureSkillWinner extends Winner {

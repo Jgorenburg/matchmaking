@@ -22,15 +22,9 @@ trait RecordGetter:
 
   def getBestRecord(
       listOfChampions: Array[Champion],
-      disallowed: Option[List[Champion]]
+      disallowed: List[Champion]
   ): Champion =
-    def champFilter(curChamp: Champion): Boolean =
-      disallowed match
-        case Some(champs) =>
-          !champs.contains(curChamp)
-        case _ => true
-    val pickableChamps = listOfChampions.filter(champFilter)
-
+    val pickableChamps = listOfChampions.filter(!disallowed.contains(_))
     assert(!pickableChamps.isEmpty)
     val bestChamps: Vector[Champion] =
       (Vector(pickableChamps.head) /: pickableChamps.tail)(betterRecord)
@@ -43,45 +37,44 @@ trait MatchupBlindRecordGetter extends RecordGetter:
 trait MatchupAwareRecordGetter extends RecordGetter:
   type RecordType = MatchupAwareRecords
 
+  def getWinPercent(champ: Champion, oppComp: Composition): Float =
+    return oppComp.foldRight(0.0f)((oppChamp, soFar) =>
+      getWinPercent(champ, oppChamp)
+    )
+      / oppComp.length
   def getWinPercent(champ: Champion, oppChamp: Champion): Float =
     return memory(champ).getWinPercent(oppChamp)
 
-  def betterRecord(oppChamp: Option[Champion])(
+  def betterRecord(oppComp: Composition)(
       curBest: Vector[Champion],
       newChamp: Champion
   ): Vector[Champion] =
-    oppChamp match
-      case None => betterRecord(curBest, newChamp)
-      case Some(champ) =>
+    oppComp match
+      case List() => betterRecord(curBest, newChamp)
+      case _ =>
         if curBest.isEmpty then Vector(newChamp)
-        else if getWinPercent(newChamp, champ) > getWinPercent(
+        else if getWinPercent(newChamp, oppComp) > getWinPercent(
             curBest(0),
-            champ
+            oppComp
           )
         then Vector(newChamp)
-        else if getWinPercent(newChamp, champ) < getWinPercent(
+        else if getWinPercent(newChamp, oppComp) < getWinPercent(
             curBest(0),
-            champ
+            oppComp
           )
         then curBest
         else curBest :+ newChamp
 
   def getBestRecord(
       listOfChampions: Array[Champion],
-      disallowed: Option[List[Champion]],
-      oppChamp: Option[Champion]
+      disallowed: List[Champion],
+      oppComp: Composition
   ): Champion =
-    def champFilter(curChamp: Champion): Boolean =
-      disallowed match
-        case Some(champs) =>
-          !champs.contains(curChamp)
-        case _ => true
-    val pickableChamps = listOfChampions.filter(champFilter)
-
+    val pickableChamps = listOfChampions.filter(!disallowed.contains(_))
     assert(!pickableChamps.isEmpty)
     val bestChamps: Vector[Champion] =
       (Vector(pickableChamps.head) /: pickableChamps.tail)(
-        betterRecord(oppChamp)
+        betterRecord(oppComp)
       )
 
     bestChamps(Random.nextInt(bestChamps.size))

@@ -9,35 +9,41 @@ trait TeamMaker {
   def draftChamps(
       blueTeam: Team,
       redTeam: Team
-  ): (Composition, Composition)
+  ): (Composition, Composition, List[Champion])
 }
 
-trait SimpleTeamMaker extends TeamMaker {
+trait SimpleDraft extends TeamMaker {
   def draftChamps(
       blueTeam: Team,
       redTeam: Team
-  ): (Composition, Composition) =
-    val bluePlayer = blueTeam(0)
-    val redPlayer = redTeam(0)
-    val blueChamp: Champion =
-      bluePlayer.chooseBlueChampion()
-    val redChamp: Champion =
-      redPlayer.chooseRedChampion(blueChamp)
-    (blueChamp, redChamp)
+  ): (Composition, Composition, List[Champion]) =
+    assert(blueTeam.length == redTeam.length)
+
+    var blueComp: Composition = List()
+    var redComp: Composition = List()
+    for (x <- 0 until blueTeam.length) do {
+      blueComp = blueTeam(x).chooseChampion(blueComp, redComp) :: blueComp
+      redComp = redTeam(x).chooseChampion(redComp, blueComp) :: redComp
+    }
+    (blueComp, redComp, List())
 }
 
-trait BansAndSinglePlayer extends TeamMaker {
+trait DraftWithBans extends TeamMaker {
   def draftChamps(
       blueTeam: Team,
       redTeam: Team
-  ): (Composition, Composition) =
-    val bluePlayer = blueTeam(0)
-    val redPlayer = redTeam(0)
-    var bans: List[Champion] = List(bluePlayer.blueBan(None))
-    bans = redPlayer.redBan(bans) :: bans
-    val blueChamp: Champion =
-      bluePlayer.chooseBlueChampion(bans)
-    val redChamp: Champion =
-      redPlayer.chooseRedChampion(blueChamp, bans)
-    (blueChamp, redChamp)
+  ): (Composition, Composition, List[Champion]) =
+    assert(!blueTeam.isEmpty)
+    assert(blueTeam.length == redTeam.length)
+
+    var bans: List[Champion] = List(blueTeam(0).blueBan())
+    bans = redTeam(0).redBan(bans) :: bans
+
+    var blueComp: Composition = List()
+    var redComp: Composition = List()
+    for (x <- 0 until blueTeam.length) do {
+      blueComp = blueTeam(x).chooseChampion(blueComp, redComp, bans) :: blueComp
+      redComp = redTeam(x).chooseChampion(redComp, blueComp, bans) :: redComp
+    }
+    (blueComp, redComp, bans)
 }
