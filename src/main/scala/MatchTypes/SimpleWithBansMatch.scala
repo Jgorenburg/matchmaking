@@ -12,6 +12,7 @@ import Base.{
 import Base.PureSkillWinner
 
 object SimpleWithBansMatchmaker extends MatchMaker:
+  val pureSkill = true
   def makeMatch(blueTeam: Team, redTeam: Team, meta: Meta) =
     new Match(blueTeam, redTeam, meta)
       with BansAndSinglePlayer

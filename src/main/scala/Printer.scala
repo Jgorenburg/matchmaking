@@ -2,7 +2,10 @@ import scala.util.{Using, Try}
 import java.io.{BufferedWriter, File, FileWriter}
 import Base.{
   GameConfig,
+  MatchMaker,
   Player,
+  Playstyle,
+  PureSkillWinner,
   Tournament,
   TournamentHistory,
   RoundHistory,
@@ -33,8 +36,16 @@ class Printer {
       numRounds: Int,
       config: GameConfig
   ): Unit =
+    val pureSkill = config.matchMaker.pureSkill match
+      case true  => "Y"
+      case false => "N"
+    val pokemonMeta = config.gameMaker.playstyles match
+      case Array(Playstyle.Default) => "N"
+      case _                        => "Y"
+
     var content =
-      tournamentType + "\t" + numRounds + "\t" + config.listOfPlayers.length + "\t" + config.listOfChamps.length + "\t1\tY\tN"
+      tournamentType + "\t" + numRounds + "\t" + config.listOfPlayers.length
+        + "\t" + config.listOfChamps.length + "\t" + config.teamSize + "\t" + pureSkill + "\t" + pokemonMeta
     writer.write(content)
 
   def writeTournament(

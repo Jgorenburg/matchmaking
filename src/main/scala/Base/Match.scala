@@ -28,4 +28,5 @@ trait Match(
 }
 
 trait MatchMaker:
+  val pureSkill: Boolean
   def makeMatch(blueTeam: Team, redTeam: Team, meta: Meta): Match

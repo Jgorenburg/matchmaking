@@ -11,5 +11,6 @@ import Base.{
 }
 
 object SimpleMatchMaker extends MatchMaker:
+  val pureSkill: Boolean = true
   def makeMatch(blueTeam: Team, redTeam: Team, meta: Meta) =
     new Match(blueTeam, redTeam, meta) with SimpleTeamMaker with PureSkillWinner
