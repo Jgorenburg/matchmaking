@@ -77,6 +77,7 @@ class Printer {
   ): Unit =
     def writePlayer(player: Player): Unit =
       var line = player.toString()
+      line += "\t" + player.getTotalWins() + "\t" + player.getTotalGames()
       val memlist =
         player.memory.toSeq.sortBy(mem => meta.champStrength(mem._1))
       for champ <- memlist do

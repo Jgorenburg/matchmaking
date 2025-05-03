@@ -7,6 +7,12 @@ trait RecordGetter:
   type RecordType <: Record
   def memory: HashMap[Champion, RecordType]
 
+  def getTotalWins(): Int =
+    return memory.values.map(record => record.wins).sum.toInt
+
+  def getTotalGames(): Int =
+    return memory.values.map(record => record.games).sum.toInt
+
   def getWinPercent(champ: Champion): Float =
     return memory(champ).getWinPercent
 
