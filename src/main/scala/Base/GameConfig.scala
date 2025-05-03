@@ -1,5 +1,8 @@
 package Base
 
+import scala.io.Source
+import java.io.File
+
 class GameConfig(
     val numPlayers: Int,
     val numChamps: Int,
@@ -13,7 +16,15 @@ class GameConfig(
   val meta: Meta = gameMaker.makeMeta(listOfChamps)
 
   var listOfPlayers: Vector[Player] =
-    (1 to numPlayers).toVector.map(i => playerMaker.makePlayer(listOfChamps))
+    val listOfFlowers = {
+      val src = Source.fromFile(
+        new File(getClass.getClassLoader.getResource("flowers.txt").getPath)
+      )
+      val lines = src.getLines.take(numPlayers).toArray
+      src.close
+      lines
+    }
+    listOfFlowers.toVector.map(f => playerMaker.makePlayer(f, listOfChamps))
 
   // def makeMatch(blueTeam: List[Int], redTeam: List[Int]): Match =
   //   matchMaker.makeMatch(blueTeam.map(getPlayer), redTeam.map(getPlayer), meta)

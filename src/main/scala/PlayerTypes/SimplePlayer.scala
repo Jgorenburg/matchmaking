@@ -17,8 +17,8 @@ import Base.{
   SingleChampMemoryHandling
 }
 
-class SimplePlayer(val champions: Array[Champion])
-    extends Player
+class SimplePlayer(name: String, val champions: Array[Champion])
+    extends Player(name)
     with SingleChampMemoryHandling
     with MatchupBlind:
 
@@ -31,4 +31,5 @@ class SimplePlayer(val champions: Array[Champion])
     getBestRecord(champions, offLimits)
 
 object SimplePlayerMaker extends PlayerMaker:
-  def makePlayer(champions: Array[Champion]) = new SimplePlayer(champions)
+  def makePlayer(name: String, champions: Array[Champion]) =
+    new SimplePlayer(name, champions)

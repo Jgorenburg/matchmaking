@@ -3,10 +3,13 @@ package Base
 type Team = List[Player]
 implicit def singlePlayerTeam(player: Player): Team = List(player)
 
-trait Player extends MemoryHandling with RecordGetter with RecordSetter:
+trait Player(val name: String)
+    extends MemoryHandling
+    with RecordGetter
+    with RecordSetter:
   type RecordType <: Record
 
-  override def toString(): String = super.toString().split("@")(1)
+  override def toString(): String = name
 
   def getChampion(
       offLimits: List[Champion],
@@ -35,7 +38,7 @@ trait Player extends MemoryHandling with RecordGetter with RecordSetter:
     getChampion(priorBans)
 
 trait PlayerMaker:
-  def makePlayer(champions: Array[Champion]): Player
+  def makePlayer(name: String, champions: Array[Champion]): Player
 
 trait MatchupBlind
     extends MatchupBlindRecordGetter

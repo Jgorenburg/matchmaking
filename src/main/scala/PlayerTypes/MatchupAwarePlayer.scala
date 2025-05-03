@@ -11,8 +11,8 @@ import Base.{
 }
 import scala.collection.mutable
 
-class MatchupAwarePlayer(val champions: Array[Champion])
-    extends Player
+class MatchupAwarePlayer(name: String, val champions: Array[Champion])
+    extends Player(name)
     with SingleChampMemoryHandling
     with MatchupAware:
 
@@ -25,4 +25,5 @@ class MatchupAwarePlayer(val champions: Array[Champion])
     getBestRecord(champions, offLimits, oppComp)
 
 object MatchupAwarePlayerMaker extends PlayerMaker:
-  def makePlayer(champions: Array[Champion]) = new MatchupAwarePlayer(champions)
+  def makePlayer(name: String, champions: Array[Champion]) =
+    new MatchupAwarePlayer(name, champions)
