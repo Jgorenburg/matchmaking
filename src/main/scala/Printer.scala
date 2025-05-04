@@ -2,6 +2,7 @@ import scala.util.{Using, Try}
 import java.io.{BufferedWriter, File, FileWriter}
 import Base.{
   GameConfig,
+  Champion,
   MatchMaker,
   Player,
   Playstyle,
@@ -12,6 +13,7 @@ import Base.{
   MatchHistory,
   Meta
 }
+
 //TODO: Add bans + tournament type to config
 class Printer {
   def writeToFile(tourny: Tournament, filename: String): Unit =
@@ -24,6 +26,12 @@ class Printer {
       )
       writePlayers(
         bufferedWriter,
+        tourny.config.listOfPlayers,
+        tourny.config.meta
+      )
+      writeChampions(
+        bufferedWriter,
+        tourny.config.listOfChamps,
         tourny.config.listOfPlayers,
         tourny.config.meta
       )
@@ -88,6 +96,33 @@ class Printer {
           "\t" + record.wins.toInt + "\t" + record.games.toInt
       writeLine(writer, line)
     for player <- players do writePlayer(player)
+
+  def writeChampions(
+      writer: BufferedWriter,
+      champions: Array[Champion],
+      players: Vector[Player],
+      meta: Meta
+  ): Unit = {
+    var games = scala.collection.mutable.Map(champions.map(_ -> 0f)*)
+    var wins = scala.collection.mutable.Map(champions.map(_ -> 0f)*)
+    players.foreach(player =>
+      champions.foreach(champ =>
+        games += (champ -> player.memory(champ).games)
+        wins += (champ -> player.memory(champ).wins)
+      )
+    )
+
+    champions.foreach(champ =>
+      val winPercent = BigDecimal(wins(champ) / games(champ))
+        .setScale(3, BigDecimal.RoundingMode.HALF_UP)
+        .toDouble
+      var line: String =
+        champ.name + "\t" + winPercent + "\t" + wins(champ).toInt +
+          "\t" + games(champ).toInt + "\t" + champ.playstyle + "\t" + meta
+            .champStrength(champ)
+      writeLine(writer, line)
+    )
+  }
 
   def writeLine(writer: BufferedWriter, content: String): Unit =
     writer.newLine()
