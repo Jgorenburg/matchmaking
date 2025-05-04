@@ -17,10 +17,8 @@ class GameConfig(
 
   var listOfPlayers: Vector[Player] =
     val listOfFlowers = {
-      val src = Source.fromFile(
-        new File(
-          getClass.getClassLoader.getResource("flowersAndRocks.txt").getPath
-        )
+      val src = Source.fromInputStream(
+        getClass.getClassLoader.getResourceAsStream("flowersAndRocks.txt")
       )
       val lines = src.getLines.take(numPlayers).toArray
       src.close

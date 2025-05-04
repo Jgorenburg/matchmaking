@@ -4,61 +4,192 @@ import MatchTypes.{RandomMatchMaker, RandomWithBansMatchmaker, SimpleMatchMaker}
 import GameTypes.{BasicGame, MTG, RockPaperScissors}
 import MatchTypes.SimpleWithBansMatchmaker
 
-@main def hello(): Unit =
-  val simpleconfig =
-    new GameConfig(10, 10, 1, SimplePlayerMaker, SimpleMatchMaker, BasicGame)
-  val simpletourny = Tournament(simpleconfig, 1000)
-  val randomconfig =
-    new GameConfig(10, 10, 1, SimplePlayerMaker, RandomMatchMaker, BasicGame)
-  val randomtourny = Tournament(randomconfig, 1000)
-  val basicstyleconfig =
-    new GameConfig(
-      2,
-      3,
-      1,
-      MatchupAwarePlayerMaker,
-      RandomMatchMaker,
-      RockPaperScissors
+import scala.io.StdIn
+
+object Main {
+  def main(args: Array[String]): Unit =
+    print(args)
+    if (args.length > 0) {
+      try
+        args(0).toInt match
+          case 1 => simpleGame()
+          case 2 => randomGame()
+          case 3 => rpsGame()
+          case 4 => mtgGame()
+          case 5 => bansGame()
+          case 6 => teamGame()
+          case 7 => manyGame()
+          case 8 =>
+            simpleGame()
+            randomGame()
+            rpsGame()
+            mtgGame()
+            bansGame()
+            teamGame()
+            manyGame()
+          case _ => println("Invalid selection. Please try again.")
+      catch
+        case _: java.lang.NumberFormatException =>
+          println("Invalid arg: " + args(0) + " is not a number")
+      return
+    }
+
+    val options = List(
+      "1. Simple",
+      "2. Random",
+      "3. RPS",
+      "4. MTG",
+      "5. Simple with Bans",
+      "6. Teams",
+      "7. Many Players",
+      "8. All",
+      "9. Exit"
     )
-  val basicstyletourny = Tournament(basicstyleconfig, 1000)
-  val mtg =
-    new GameConfig(
-      4,
-      5,
-      1,
-      MatchupAwarePlayerMaker,
-      RandomMatchMaker,
-      MTG
+
+    var running: Boolean = true
+
+    while (running) {
+
+      displayMenu(options)
+      val selection = getUserChoice(options.size)
+
+      selection match {
+        case 1 => simpleGame()
+        case 2 => randomGame()
+        case 3 => rpsGame()
+        case 4 => mtgGame()
+        case 5 => bansGame()
+        case 6 => teamGame()
+        case 7 => manyGame()
+        case 8 =>
+          simpleGame()
+          randomGame()
+          rpsGame()
+          mtgGame()
+          bansGame()
+          teamGame()
+          manyGame()
+        case 9 =>
+          println("Exiting program. Goodbye!")
+          running = false
+        case _ => println("Invalid selection. Please try again.")
+      }
+    }
+
+  def simpleGame(): Unit = {
+    val config =
+      new GameConfig(10, 10, 1, SimplePlayerMaker, SimpleMatchMaker, BasicGame)
+    runTournament(
+      config,
+      "results/simple.txt"
     )
-  val mtgtourney = Tournament(mtg, 1000)
-  val simplebansconfig =
-    new GameConfig(
-      4,
-      4,
-      1,
-      SimplePlayerMaker,
-      SimpleWithBansMatchmaker,
-      BasicGame
+  }
+
+  def randomGame(): Unit = {
+    runTournament(
+      new GameConfig(10, 10, 1, SimplePlayerMaker, RandomMatchMaker, BasicGame),
+      "results/random.txt"
     )
-  val simplebanstourny = Tournament(simplebansconfig, 1000)
-  val teamconfig =
-    new GameConfig(
-      10,
-      10,
-      2,
-      SimplePlayerMaker,
-      SimpleWithBansMatchmaker,
-      BasicGame
+  }
+
+  def rpsGame(): Unit = {
+    runTournament(
+      new GameConfig(
+        2,
+        3,
+        1,
+        MatchupAwarePlayerMaker,
+        RandomMatchMaker,
+        RockPaperScissors
+      ),
+      "results/rps.txt"
     )
-  val teamtourny = Tournament(teamconfig, 1000)
-  val manyplayersconfig =
-    new GameConfig(1000, 10, 1, SimplePlayerMaker, SimpleMatchMaker, BasicGame)
-  val manyplayerstourny = Tournament(manyplayersconfig, 1000)
-  val printer = new Printer
-  printer.writeToFile(simpletourny, "results/simple.txt")
-  printer.writeToFile(randomtourny, "results/random.txt")
-  printer.writeToFile(basicstyletourny, "results/rps.txt")
-  printer.writeToFile(mtgtourney, "results/mtg.txt")
-  printer.writeToFile(simplebanstourny, "results/bans.txt")
-  printer.writeToFile(teamtourny, "results/teams.txt")
-  printer.writeToFile(manyplayerstourny, "results/many.txt")
+  }
+
+  def mtgGame(): Unit = {
+    runTournament(
+      new GameConfig(
+        4,
+        5,
+        1,
+        MatchupAwarePlayerMaker,
+        RandomMatchMaker,
+        MTG
+      ),
+      "results/mtg.txt"
+    )
+  }
+
+  def bansGame(): Unit = {
+    runTournament(
+      new GameConfig(
+        4,
+        4,
+        1,
+        SimplePlayerMaker,
+        SimpleWithBansMatchmaker,
+        BasicGame
+      ),
+      "results/bans.txt"
+    )
+  }
+
+  def teamGame(): Unit = {
+    runTournament(
+      new GameConfig(
+        10,
+        10,
+        2,
+        SimplePlayerMaker,
+        SimpleWithBansMatchmaker,
+        BasicGame
+      ),
+      "results/teams.txt"
+    )
+  }
+
+  def manyGame(): Unit = {
+    runTournament(
+      new GameConfig(
+        1000,
+        10,
+        1,
+        SimplePlayerMaker,
+        SimpleMatchMaker,
+        BasicGame
+      ),
+      "results/many.txt"
+    )
+  }
+
+  def runTournament(config: GameConfig, outputFile: String): Unit = {
+    val tourny = Tournament(config, 1000)
+    val printer = new Printer
+    printer.writeToFile(tourny, outputFile)
+  }
+
+  def displayMenu(options: List[String]): Unit = {
+    println("\n===== MENU =====")
+    options.foreach(println)
+    println("===============")
+    print("Enter your choice (1-" + options.size + "): ")
+  }
+
+  def getUserChoice(maxOption: Int): Int = {
+    try {
+      val input = StdIn.readLine().trim
+      val choice = input.toInt
+
+      if (choice < 1 || choice > maxOption) {
+        println(s"Please enter a number between 1 and $maxOption.")
+        getUserChoice(maxOption) // Recursively ask again
+      } else {
+        choice
+      }
+    } catch {
+      case _: NumberFormatException =>
+        println("Please enter a valid number.")
+        getUserChoice(maxOption) // Recursively ask again
+    }
+  }
+}

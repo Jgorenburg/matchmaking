@@ -12,8 +12,8 @@ object RockPaperScissors extends GameMaker {
 
   def makeChamps(numChamps: Int): Array[Champion] = {
     val listOfFishies = {
-      val src = Source.fromFile(
-        new File(getClass.getClassLoader.getResource("fishies.txt").getPath)
+      val src = Source.fromInputStream(
+        getClass.getClassLoader.getResourceAsStream("fishies.txt")
       )
       val lines = src.getLines.take(numChamps).toArray
       src.close
