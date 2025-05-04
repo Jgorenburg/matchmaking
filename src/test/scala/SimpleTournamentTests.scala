@@ -17,7 +17,7 @@ import GameTypes.BasicGame
 class SimpleTournamentTests extends munit.FunSuite {
   test("basic player test") {
     val champ = Default("ayu")
-    val player = SimplePlayer(Array(Default("ayu")))
+    val player = SimplePlayer("Amaryllis", Array(Default("ayu")))
     assertEquals(player.champions(0), champ)
   }
   test("basic config test") {
