@@ -5,6 +5,9 @@ import GameTypes.{BasicGame, MTG, RockPaperScissors}
 import MatchTypes.SimpleWithBansMatchmaker
 
 import scala.io.StdIn
+import Base.GameMaker
+import Base.MatchMaker
+import Base.PlayerMaker
 
 object Main {
   def main(args: Array[String]): Unit =
@@ -27,7 +30,7 @@ object Main {
             bansGame()
             teamGame()
             manyGame()
-          case _ => println("Invalid selection. Please try again.")
+          case _ => println("Invalid selection. Must select between 1 and 8")
       catch
         case _: java.lang.NumberFormatException =>
           println("Invalid arg: " + args(0) + " is not a number")
@@ -43,7 +46,8 @@ object Main {
       "6. Teams",
       "7. Many Players",
       "8. All",
-      "9. Exit"
+      "9. Custom",
+      "10. Exit"
     )
 
     var running: Boolean = true
@@ -70,11 +74,51 @@ object Main {
           teamGame()
           manyGame()
         case 9 =>
+          val tournySize = customTournamentSize()
+          val champpool = customChamppoolSize()
+          val teamsize = customTeamSize()
+          val playerType = customPlayerMaker()
+          val matchType = customMatchMaker()
+          val gameType = customGameMaker()
+          customGame(
+            tournySize,
+            champpool,
+            teamsize,
+            playerType,
+            matchType,
+            gameType,
+            "results/custom.txt"
+          )
+        case 10 =>
           println("Exiting program. Goodbye!")
           running = false
         case _ => println("Invalid selection. Please try again.")
       }
     }
+
+  def customGame(
+      numPlayers: Int,
+      numChamps: Int,
+      teamSize: Int,
+      playerType: PlayerMaker,
+      matchType: MatchMaker,
+      gameType: GameMaker,
+      outputFile: String
+  ): Unit = {
+    val config =
+      new GameConfig(
+        numPlayers,
+        numChamps,
+        teamSize,
+        playerType,
+        matchType,
+        gameType
+      )
+    runTournament(
+      config,
+      outputFile
+    )
+  }
 
   def simpleGame(): Unit = {
     val config =
@@ -166,6 +210,60 @@ object Main {
     val tourny = Tournament(config, 1000)
     val printer = new Printer
     printer.writeToFile(tourny, outputFile)
+  }
+
+  def customTournamentSize(): Int = {
+    println("Tournament Size:")
+    getUserChoice(1000)
+  }
+
+  def customChamppoolSize(): Int = {
+    println("Number of Champions:")
+    getUserChoice(1000)
+  }
+
+  def customTeamSize(): Int = {
+    println("Team Size:")
+    getUserChoice(5)
+  }
+
+  def customPlayerMaker(): PlayerMaker = {
+    val options = List(
+      "1. Simple Player",
+      "2. Matchup Aware Player"
+    )
+    displayMenu(options)
+    getUserChoice(options.length) match
+      case 1 => SimplePlayerMaker
+      case 2 => MatchupAwarePlayerMaker
+  }
+
+  def customMatchMaker(): MatchMaker = {
+    val options = List(
+      "1. Simple Match",
+      "2. Random Match",
+      "3. Simple Match with Bans",
+      "4. Random Match with Bans"
+    )
+    displayMenu(options)
+    getUserChoice(options.length) match
+      case 1 => SimpleMatchMaker
+      case 2 => RandomMatchMaker
+      case 3 => SimpleWithBansMatchmaker
+      case 4 => RandomWithBansMatchmaker
+  }
+
+  def customGameMaker(): GameMaker = {
+    val options = List(
+      "1. Basic Game",
+      "2. MTG Game",
+      "3. RPS Game"
+    )
+    displayMenu(options)
+    getUserChoice(options.length) match
+      case 1 => BasicGame
+      case 2 => MTG
+      case 3 => RockPaperScissors
   }
 
   def displayMenu(options: List[String]): Unit = {
