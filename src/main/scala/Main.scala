@@ -265,14 +265,14 @@ object Main {
   def customGameMaker(): GameMaker = {
     val options = List(
       "1. Basic Game",
-      "2. MTG Game",
-      "3. RPS Game"
+      "2. RPS Game",
+      "3. MTG Game"
     )
     displayMenu(options)
     getUserChoice(options.length) match
       case 1 => BasicGame
-      case 2 => MTG
-      case 3 => RockPaperScissors
+      case 2 => RockPaperScissors
+      case 3 => MTG
   }
 
   def customStrengthFunct(
