@@ -107,8 +107,8 @@ class Printer {
     var wins = scala.collection.mutable.Map(champions.map(_ -> 0f)*)
     players.foreach(player =>
       champions.foreach(champ =>
-        games += (champ -> player.memory(champ).games)
-        wins += (champ -> player.memory(champ).wins)
+        games(champ) += player.memory(champ).games
+        wins(champ) += player.memory(champ).wins
       )
     )
 
