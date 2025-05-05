@@ -1,13 +1,18 @@
-import Base.{GameConfig, Tournament}
+import Base.{
+  Champion,
+  GameConfig,
+  GameMaker,
+  MatchMaker,
+  PlayerMaker,
+  StrengthFunctions,
+  Tournament
+}
 import PlayerTypes.{SimplePlayerMaker, MatchupAwarePlayerMaker}
 import MatchTypes.{RandomMatchMaker, RandomWithBansMatchmaker, SimpleMatchMaker}
 import GameTypes.{BasicGame, MTG, RockPaperScissors}
 import MatchTypes.SimpleWithBansMatchmaker
 
 import scala.io.StdIn
-import Base.GameMaker
-import Base.MatchMaker
-import Base.PlayerMaker
 
 object Main {
   def main(args: Array[String]): Unit =
@@ -80,6 +85,7 @@ object Main {
           val playerType = customPlayerMaker()
           val matchType = customMatchMaker()
           val gameType = customGameMaker()
+          val strengthFunct = customStrengthFunct(tournySize, champpool)
           customGame(
             tournySize,
             champpool,
@@ -87,6 +93,7 @@ object Main {
             playerType,
             matchType,
             gameType,
+            strengthFunct,
             "results/custom.txt"
           )
         case 10 =>
@@ -103,6 +110,7 @@ object Main {
       playerType: PlayerMaker,
       matchType: MatchMaker,
       gameType: GameMaker,
+      strengthFunct: Array[Champion] => Map[Champion, Int],
       outputFile: String
   ): Unit = {
     val config =
@@ -112,7 +120,8 @@ object Main {
         teamSize,
         playerType,
         matchType,
-        gameType
+        gameType,
+        Some(strengthFunct)
       )
     runTournament(
       config,
@@ -266,11 +275,34 @@ object Main {
       case 3 => RockPaperScissors
   }
 
+  def customStrengthFunct(
+      numPlayers: Int,
+      numChamps: Int
+  ): Array[Champion] => Map[Champion, Int] = {
+    val options = List(
+      "1. All Equal",
+      "2. Zip With Index",
+      "3. Mod X",
+      "4. Custom Vals"
+    )
+    displayMenu(options)
+    getUserChoice(options.length) match
+      case 1 => StrengthFunctions.allOne
+      case 2 => StrengthFunctions.withIndex
+      case 3 => StrengthFunctions.modX(getUserChoice(numPlayers))
+      case 4 => StrengthFunctions.custom(getUserList(numChamps))
+  }
+
   def displayMenu(options: List[String]): Unit = {
     println("\n===== MENU =====")
     options.foreach(println)
     println("===============")
     print("Enter your choice (1-" + options.size + "): ")
+  }
+
+  def getUserList(numElems: Int): List[Int] = {
+    println(s"\nPlease enter numbers between 1 and 1000.")
+    List.fill(numElems)(getUserChoice(1000))
   }
 
   def getUserChoice(maxOption: Int): Int = {

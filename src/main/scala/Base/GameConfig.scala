@@ -9,11 +9,15 @@ class GameConfig(
     val teamSize: Int,
     val playerMaker: PlayerMaker,
     val matchMaker: MatchMaker,
-    val gameMaker: GameMaker
+    val gameMaker: GameMaker,
+    val strengthFunction: Option[Array[Champion] => Map[Champion, Int]] = None
 ):
   val listOfChamps: Array[Champion] =
     gameMaker.makeChamps(numChamps)
-  val meta: Meta = gameMaker.makeMeta(listOfChamps)
+  val meta: Meta =
+    strengthFunction match
+      case Some(f) => gameMaker.makeMeta(listOfChamps, f)
+      case None    => gameMaker.makeMeta(listOfChamps)
 
   var listOfPlayers: Vector[Player] =
     val listOfFlowers = {

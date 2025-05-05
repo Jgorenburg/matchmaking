@@ -34,3 +34,8 @@ trait MetaMaker:
   def makeMeta(
       champseed: Map[Champion, Int]
   ): Meta
+
+  def makeMeta(
+      champseed: Array[Champion],
+      stregnthFunct: Array[Champion] => Map[Champion, Int]
+  ): Meta = makeMeta(stregnthFunct(champseed))

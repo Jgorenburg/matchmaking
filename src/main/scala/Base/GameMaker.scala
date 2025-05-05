@@ -9,3 +9,11 @@ trait GameMaker:
   def makeMeta(
       listOfChamps: Array[Champion]
   ): Meta
+  def makeMeta(
+      listOfChamps: Array[Champion],
+      stregnthFunct: Array[Champion] => Map[Champion, Int]
+  ): Meta =
+    metaMaker.makeMeta(
+      listOfChamps,
+      stregnthFunct
+    )

@@ -2,10 +2,17 @@ package GameTypes
 import scala.io.Source
 import java.io.File
 import scala.util.Random
-import MetaTypes.{BasicMetaMaker, RandomRelationshipMeta}
-import Base.{Champion, Default, GameMaker, MetaMaker, Playstyle, Specialized}
-import Base.Meta
-import MetaTypes.DefinedMeta
+import MetaTypes.{BasicMetaMaker, DefinedMeta, RandomRelationshipMeta}
+import Base.{
+  Champion,
+  Default,
+  GameMaker,
+  Meta,
+  MetaMaker,
+  Playstyle,
+  Specialized,
+  StrengthFunctions
+}
 
 object MTG extends GameMaker {
   val playstyles =
@@ -67,9 +74,5 @@ object MTG extends GameMaker {
     )
   )
   def makeMeta(listOfChamps: Array[Champion]): Meta =
-    metaMaker.makeMeta(
-      listOfChamps
-        .map(x => (x, (if x.playstyle == playstyles(0) then 3 else 1)))
-        .toMap
-    )
+    metaMaker.makeMeta(listOfChamps, StrengthFunctions.allOne)
 }
